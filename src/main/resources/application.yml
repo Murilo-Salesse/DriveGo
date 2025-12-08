@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: drivego
+
+  datasource:
+    url: ${URL_C}
+    username: ${USER_C}
+    password: ${PASSWORD_C}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true;
+
+  flyway:
+    enabled: true
+    baselineOnMigrate: true
+    validateOnMigrate: true
+    locations: classpath:db/migration

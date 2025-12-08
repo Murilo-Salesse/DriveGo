@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: drivego-db
+    environment:
+      POSTGRES_DB: drivego
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5439:5432"
+    volumes:
+      - drivego_data:/var/lib/postgresql/data
+    networks:
+      - drivego-net
+
+  app:
+    build: .
+    container_name: drivego-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: ${URL}
+      SPRING_DATASOURCE_USERNAME: ${USER}
+      SPRING_DATASOURCE_PASSWORD: ${PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - postgres
+    networks:
+      - drivego-net
+
+volumes:
+  drivego_data:
+
+networks:
+  drivego-net:
