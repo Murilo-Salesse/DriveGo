@@ -1,6 +1,5 @@
 package br.com.DriveGo.drivego.infrastructure.persistence;
 
-import br.com.DriveGo.drivego.core.enums.Roles;
 import br.com.DriveGo.drivego.core.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -66,4 +65,10 @@ public class VehicleEntity {
 
     @OneToMany(mappedBy = "vehicle")
     private List<ReservationEntity> reservations;
+
+    @OneToMany(mappedBy = "vehicle")
+    private List<MaintenanceRecordsEntity> maintenanceRecords;
+
+    @OneToMany(mappedBy = "vehicle")
+    private List<DamageEntity> damages;
 }

@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "reservations")
@@ -41,10 +42,10 @@ public class ReservationEntity {
     private ReservationStatus reservation_status = ReservationStatus.PENDING;
 
     @NotNull
-    Double total_amount;
+    private Double total_amount;
 
     @NotNull
-    Double deposit_amount;
+    private Double deposit_amount;
 
     @CreationTimestamp
     private LocalDateTime created_at;
@@ -52,5 +53,6 @@ public class ReservationEntity {
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
-
+    @OneToMany(mappedBy = "reservation")
+    private List<DamageEntity> damages;
 }
