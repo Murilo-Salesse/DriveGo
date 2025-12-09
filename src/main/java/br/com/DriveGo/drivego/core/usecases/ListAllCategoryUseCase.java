@@ -1,7 +1,10 @@
 package br.com.DriveGo.drivego.core.usecases;
+
 import br.com.DriveGo.drivego.core.entities.Category;
 
-public interface CreateCategoryUseCase {
+import java.util.List;
 
-    Category execute(Category category);
+public interface ListAllCategoryUseCase {
+
+    List<Category> execute();
 }

@@ -7,26 +7,20 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class CategoryEntityMapper {
 
-    // Converte de CategoryEntity (entrada) para CategoryModel (entidade do banco)
+    // Converte de CategoryRequest(entrada) para CategoryEntity (entidade para salvar no banco)
     public static CategoryEntity toEntity(Category category) {
-        if (category == null) {
-            return null;
-        }
+        if (category == null) return null;
 
         CategoryEntity entity = new CategoryEntity();
-
         entity.setId(category.getId());
         entity.setName(category.getName());
         entity.setDescription(category.getDescription());
-
         return entity;
     }
 
-    // Converte de Category (entidade do banco) para CategoryEntity (saida)
+    // Converte de CategoryEntity (entidade do banco) para CategoryResponse (saida)
     public static Category toDomain(CategoryEntity entity) {
-        if (entity == null) {
-            return null;
-        }
+        if (entity == null) return null;
 
         return new Category(
                 entity.getId(),

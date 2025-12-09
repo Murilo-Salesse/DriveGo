@@ -11,6 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "reservations")
@@ -21,7 +22,8 @@ public class ReservationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+    @Column(columnDefinition = "uuid")
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

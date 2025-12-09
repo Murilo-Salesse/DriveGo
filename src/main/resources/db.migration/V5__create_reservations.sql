@@ -5,8 +5,8 @@ CREATE TABLE reservations (
     start_datetime TIMESTAMP NOT NULL,
     end_datetime TIMESTAMP NOT NULL,
     status reservation_status NOT NULL DEFAULT 'PENDING',
-    total_amount NUMERIC,
-    deposit_amount NUMERIC,
+    total_amount NUMERIC(10,2),
+    deposit_amount NUMERIC(10,2),
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );

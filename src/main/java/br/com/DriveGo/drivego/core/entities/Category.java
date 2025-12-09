@@ -1,25 +1,24 @@
 package br.com.DriveGo.drivego.core.entities;
-
 import java.util.Objects;
+import java.util.UUID;
 
 public class Category {
 
-    String id;
+    UUID id;
     String name;
     String description;
 
-
-    public Category(String id, String name, String description) {
+    public Category(UUID id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -54,7 +53,7 @@ public class Category {
     @Override
     public String toString() {
         return "Category{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
