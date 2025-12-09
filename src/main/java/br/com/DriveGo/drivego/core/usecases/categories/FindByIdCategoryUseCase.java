@@ -1,4 +1,4 @@
-package br.com.DriveGo.drivego.core.usecases;
+package br.com.DriveGo.drivego.core.usecases.categories;
 import br.com.DriveGo.drivego.core.entities.Category;
 
 import java.util.UUID;

@@ -8,5 +8,8 @@ public interface CategoryGateway {
 
     Category createCategory(Category category);
     List<Category> getAllCategories();
+    List<Category> getCategoryByName(String categoryName);
     Category findById(UUID id);
+    Category updateCategory(Category category, UUID id);
+    Void deleteById(UUID id);
 }
