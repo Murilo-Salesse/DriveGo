@@ -22,13 +22,15 @@ public class CategoryController {
     private final ListAllCategoryUseCase listAllCategoryUseCase;
     private final DeleteCategoryUseCase deleteCategoryUseCase;
     private final UpdateCategoryUseCase updateCategoryUseCase;
+    private final ListCategoryByNameUseCase listCategoryByNameUseCase;
 
-    public CategoryController(CreateCategoryUseCase createCategoryUseCase, FindByIdCategoryUseCase findByIdCategoryUseCase, ListAllCategoryUseCase listAllCategoryUseCase, DeleteCategoryUseCase deleteCategoryUseCase, UpdateCategoryUseCase updateCategoryUseCase) {
+    public CategoryController(CreateCategoryUseCase createCategoryUseCase, FindByIdCategoryUseCase findByIdCategoryUseCase, ListAllCategoryUseCase listAllCategoryUseCase, DeleteCategoryUseCase deleteCategoryUseCase, UpdateCategoryUseCase updateCategoryUseCase, ListCategoryByNameUseCase listCategoryByNameUseCase) {
         this.createCategoryUseCase = createCategoryUseCase;
         this.findByIdCategoryUseCase = findByIdCategoryUseCase;
         this.listAllCategoryUseCase = listAllCategoryUseCase;
         this.deleteCategoryUseCase = deleteCategoryUseCase;
         this.updateCategoryUseCase = updateCategoryUseCase;
+        this.listCategoryByNameUseCase = listCategoryByNameUseCase;
     }
 
     @PostMapping("/create")
@@ -61,6 +63,18 @@ public class CategoryController {
         Map<String, Object> response = Map.of(
                 "message", "Categoria encontrada com sucesso.",
                 "category", CategoryMapper.toCategoryRequest(findCategory)
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/find/")
+    public ResponseEntity<@NonNull Map<String, Object>> findCategoryByName(@RequestParam("name") String name) {
+        List<Category> findCategory = listCategoryByNameUseCase.execute(name);
+
+        Map<String, Object> response = Map.of(
+                "message", "Categoria(s) encontrada com sucesso.",
+                "category", CategoryMapper.toCategoryRequestList(findCategory)
         );
 
         return ResponseEntity.ok(response);

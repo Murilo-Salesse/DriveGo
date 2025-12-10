@@ -27,4 +27,9 @@ public class BeanConfiguration {
     @Bean public UpdateCategoryUseCase updateCategoryUseCase(CategoryGateway categoryGateway) {
         return new UpdateCategoryUseCaseImp(categoryGateway);
     }
+
+    @Bean public ListCategoryByNameUseCase listCategoryByNameUseCase(CategoryGateway categoryGateway) {
+        return new ListCategoryByNameUseCaseImp(categoryGateway);
+    }
+
 }

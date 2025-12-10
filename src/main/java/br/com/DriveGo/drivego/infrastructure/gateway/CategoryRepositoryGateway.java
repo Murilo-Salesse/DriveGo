@@ -6,7 +6,6 @@ import br.com.DriveGo.drivego.infrastructure.exceptions.NotFoundException;
 import br.com.DriveGo.drivego.infrastructure.mappers.CategoryEntityMapper;
 import br.com.DriveGo.drivego.infrastructure.persistence.CategoryEntity;
 import br.com.DriveGo.drivego.infrastructure.persistence.CategoryRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -39,7 +38,11 @@ public class CategoryRepositoryGateway implements CategoryGateway {
 
     @Override
     public List<Category> getCategoryByName(String categoryName) {
-        return List.of();
+        List<CategoryEntity> categoryNamesList = categoryRepository.findCategoryByNameContainingIgnoreCase(categoryName);
+
+        return categoryNamesList.stream()
+                .map(CategoryEntityMapper::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
