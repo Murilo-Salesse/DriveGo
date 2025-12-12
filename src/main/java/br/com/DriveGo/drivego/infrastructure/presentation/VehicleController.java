@@ -2,16 +2,15 @@ package br.com.DriveGo.drivego.infrastructure.presentation;
 
 import br.com.DriveGo.drivego.core.entities.Vehicle;
 import br.com.DriveGo.drivego.core.usecases.vehicles.CreateVehicleUseCase;
+import br.com.DriveGo.drivego.core.usecases.vehicles.ListAllVehiclesUseCase;
 import br.com.DriveGo.drivego.infrastructure.dtos.requests.VehicleRequest;
 import br.com.DriveGo.drivego.infrastructure.mappers.VehicleMapper;
 import jakarta.validation.Valid;
 import lombok.NonNull;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,9 +18,11 @@ import java.util.Map;
 public class VehicleController {
 
     private final CreateVehicleUseCase createVehicleUseCase;
+    private final ListAllVehiclesUseCase listAllVehiclesUseCase;
 
-    public VehicleController(CreateVehicleUseCase createVehicleUseCase) {
+    public VehicleController(CreateVehicleUseCase createVehicleUseCase, ListAllVehiclesUseCase listAllVehiclesUseCase) {
         this.createVehicleUseCase = createVehicleUseCase;
+        this.listAllVehiclesUseCase = listAllVehiclesUseCase;
     }
 
     @PostMapping("/create")
@@ -36,4 +37,16 @@ public class VehicleController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<@NonNull  Map<String, Object>> listAllCategories(){
+
+        List<Vehicle> vehicles = listAllVehiclesUseCase.listAllVehicle();
+
+        Map<String, Object> response = Map.of(
+                "message", "Veiculo(s) listado(s) com sucesso.",
+                "vehicle", VehicleMapper.toVehicleResponseList(vehicles)
+        );
+
+        return ResponseEntity.ok(response);
+    }
 }

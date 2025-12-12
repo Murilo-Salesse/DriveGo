@@ -10,6 +10,9 @@ import br.com.DriveGo.drivego.infrastructure.persistence.VehicleEntity;
 import br.com.DriveGo.drivego.infrastructure.persistence.VehicleRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class VehicleRepositoryGateway implements VehicleGateway {
 
@@ -29,5 +32,14 @@ public class VehicleRepositoryGateway implements VehicleGateway {
         VehicleEntity saved = vehicleRepository.save(VehicleEntityMapper.toEntity(vehicle, category));
 
         return VehicleEntityMapper.toDomain(saved);
+    }
+
+    @Override
+    public List<Vehicle> listAllVehicle() {
+        List<VehicleEntity> vehicleEntities = vehicleRepository.findAll();
+
+        return  vehicleEntities.stream()
+                .map(VehicleEntityMapper::toDomain)
+                .collect(Collectors.toList());
     }
 }
