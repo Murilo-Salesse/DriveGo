@@ -4,6 +4,6 @@ CREATE TABLE payments (
     amount NUMERIC(10,2) NOT NULL,
     method VARCHAR NOT NULL,
     status payment_status NOT NULL DEFAULT 'PENDING',
-    provider_reference VARCHAR,
+    provider_reference VARCHAR NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );

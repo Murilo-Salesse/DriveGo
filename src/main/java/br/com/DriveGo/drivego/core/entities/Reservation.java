@@ -9,8 +9,8 @@ import java.util.UUID;
 public class Reservation {
 
     private UUID id;
-    private String user_id;
-    private String vehicle_id;
+    private UUID user_id;
+    private UUID vehicle_id;
     private LocalDateTime start_datetime;
     private LocalDateTime end_datetime;
     private ReservationStatus status;
@@ -19,7 +19,7 @@ public class Reservation {
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
-    public Reservation(UUID id, String user_id, String vehicle_id, LocalDateTime start_datetime, LocalDateTime end_datetime, ReservationStatus status, Double total_amount, Double deposit_amount, LocalDateTime created_at, LocalDateTime updated_at) {
+    public Reservation(UUID id, UUID user_id, UUID vehicle_id, LocalDateTime start_datetime, LocalDateTime end_datetime, ReservationStatus status, Double total_amount, Double deposit_amount, LocalDateTime created_at, LocalDateTime updated_at) {
         this.id = id;
         this.user_id = user_id;
         this.vehicle_id = vehicle_id;
@@ -40,19 +40,19 @@ public class Reservation {
         this.id = id;
     }
 
-    public String getUser_id() {
+    public UUID getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(String user_id) {
+    public void setUser_id(UUID user_id) {
         this.user_id = user_id;
     }
 
-    public String getVehicle_id() {
+    public UUID getVehicle_id() {
         return vehicle_id;
     }
 
-    public void setVehicle_id(String vehicle_id) {
+    public void setVehicle_id(UUID vehicle_id) {
         this.vehicle_id = vehicle_id;
     }
 
@@ -128,8 +128,8 @@ public class Reservation {
     public String toString() {
         return "Reservation{" +
                 "id=" + id +
-                ", user_id='" + user_id + '\'' +
-                ", vehicle_id='" + vehicle_id + '\'' +
+                ", user_id=" + user_id +
+                ", vehicle_id=" + vehicle_id +
                 ", start_datetime=" + start_datetime +
                 ", end_datetime=" + end_datetime +
                 ", status=" + status +

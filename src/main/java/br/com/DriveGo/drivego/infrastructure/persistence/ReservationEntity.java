@@ -57,4 +57,7 @@ public class ReservationEntity {
 
     @OneToMany(mappedBy = "reservation")
     private List<DamageEntity> damages;
+
+    @OneToMany(mappedBy = "reservation")
+    private List<PaymentEntity> payments;
 }

@@ -1,7 +1,10 @@
 package br.com.DriveGo.drivego.infrastructure.beans;
 
 import br.com.DriveGo.drivego.core.gateways.CategoryGateway;
+import br.com.DriveGo.drivego.core.gateways.VehicleGateway;
 import br.com.DriveGo.drivego.core.usecases.categories.*;
+import br.com.DriveGo.drivego.core.usecases.vehicles.CreateVehicleUseCase;
+import br.com.DriveGo.drivego.core.usecases.vehicles.CreateVehicleUseCaseImp;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -32,4 +35,8 @@ public class BeanConfiguration {
         return new ListCategoryByNameUseCaseImp(categoryGateway);
     }
 
+
+    @Bean public CreateVehicleUseCase createVehicleUseCase(VehicleGateway vehicleGateway) {
+        return new CreateVehicleUseCaseImp(vehicleGateway);
+    }
 }

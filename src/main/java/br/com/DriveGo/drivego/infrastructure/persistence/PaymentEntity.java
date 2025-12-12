@@ -25,8 +25,8 @@ public class PaymentEntity {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "vehicle_id")
-    private VehicleEntity vehicle;
+    @JoinColumn(name = "reservation_id")
+    private ReservationEntity reservation;
 
     @NotNull
     private Double amount;
@@ -36,7 +36,7 @@ public class PaymentEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "payment_status")
-    private PaymentStatus payment_status = PaymentStatus.PENDING;
+    private PaymentStatus status = PaymentStatus.PENDING;
 
     @NotBlank
     private String provider_reference;

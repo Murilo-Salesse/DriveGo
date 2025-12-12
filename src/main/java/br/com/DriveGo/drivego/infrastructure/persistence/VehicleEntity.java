@@ -12,6 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,7 +48,7 @@ public class VehicleEntity {
     private CategoryEntity category;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "vehicle_status")
+    @Column(name = "vehicle_status")
     private Status vehicle_status = Status.AVAILABLE;
 
     @NotNull
@@ -62,15 +63,16 @@ public class VehicleEntity {
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
+    // usar new arraylist para quando não existir nada no array poder vir como null e não dar erro
     @OneToMany(mappedBy = "vehicle")
-    private List<VehiclePhotosEntity> photos;
+    private List<VehiclePhotosEntity> photos = new ArrayList<>();
 
     @OneToMany(mappedBy = "vehicle")
-    private List<ReservationEntity> reservations;
+    private List<ReservationEntity> reservations = new ArrayList<>();
 
     @OneToMany(mappedBy = "vehicle")
-    private List<MaintenanceRecordsEntity> maintenanceRecords;
+    private List<MaintenanceRecordsEntity> maintenanceRecords = new ArrayList<>();
 
     @OneToMany(mappedBy = "vehicle")
-    private List<DamageEntity> damages;
+    private List<DamageEntity> damages = new ArrayList<>();
 }

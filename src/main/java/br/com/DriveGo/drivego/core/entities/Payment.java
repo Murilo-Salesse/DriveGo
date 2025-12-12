@@ -7,14 +7,14 @@ import java.util.UUID;
 public class Payment {
 
     private UUID id;
-    private String reservation_id;
+    private UUID reservation_id;
     private Double amount;
     private String method;
     private PaymentStatus status;
     private String provider_reference;
     private LocalDateTime created_at;
 
-    public Payment(UUID id, String reservation_id, Double amount, String method, PaymentStatus status, String provider_reference, LocalDateTime created_at) {
+    public Payment(UUID id, UUID reservation_id, Double amount, String method, PaymentStatus status, String provider_reference, LocalDateTime created_at) {
         this.id = id;
         this.reservation_id = reservation_id;
         this.amount = amount;
@@ -32,11 +32,11 @@ public class Payment {
         this.id = id;
     }
 
-    public String getReservation_id() {
+    public UUID getReservation_id() {
         return reservation_id;
     }
 
-    public void setReservation_id(String reservation_id) {
+    public void setReservation_id(UUID reservation_id) {
         this.reservation_id = reservation_id;
     }
 
@@ -96,7 +96,7 @@ public class Payment {
     public String toString() {
         return "Payment{" +
                 "id=" + id +
-                ", reservation_id='" + reservation_id + '\'' +
+                ", reservation_id=" + reservation_id +
                 ", amount=" + amount +
                 ", method='" + method + '\'' +
                 ", status=" + status +
