@@ -50,7 +50,7 @@ public class CategoryController {
         List<Category> categories = listAllCategoryUseCase.execute();
 
         Map<String, Object> response = Map.of(
-                "message", "Categorias encontradas com sucesso.",
+                "message", "Categoria(s) encontrada(s) com sucesso.",
                 "vehicle", CategoryMapper.toCategoryRequestList(categories));
 
         return ResponseEntity.ok(response);
@@ -73,7 +73,7 @@ public class CategoryController {
         List<Category> findCategory = listCategoryByNameUseCase.execute(name);
 
         Map<String, Object> response = Map.of(
-                "message", "Categoria(s) encontrada com sucesso.",
+                "message", "Categoria(s) encontrada(s) com sucesso.",
                 "category", CategoryMapper.toCategoryRequestList(findCategory)
         );
 

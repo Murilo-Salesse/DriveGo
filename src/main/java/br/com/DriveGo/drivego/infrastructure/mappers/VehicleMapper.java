@@ -12,21 +12,21 @@ import java.util.List;
 @UtilityClass
 public class VehicleMapper {
 
-    // Request → Domain
+    // Pega a request e transforma em domain (entidade pura)
     public static Vehicle toVehicleDomain(VehicleRequest request) {
         return new Vehicle(
-                null,                                    // id
-                request.getPlate(),                         // license_plate
-                request.getVin(),                           // vin (ANTES ESTAVA NULL)
+                null,
+                request.getPlate(),
+                request.getVin(),
                 request.getBrand(),
                 request.getModel(),
                 request.getYear().shortValue(),
                 request.getCategory_id(),
-                Status.AVAILABLE,                           // status inicial
-                request.getMileage(),                       // mileage (ANTES ESTAVA 0)
+                Status.AVAILABLE,
+                request.getMileage(),
                 BigDecimal.valueOf(request.getDaily_price()),
-                null,                              // created_at
-                null,                                       // updated_at
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -34,7 +34,8 @@ public class VehicleMapper {
         );
     }
 
-    // Domain → Response
+    // Ele pega a entidade pura do dominio e transforma em request
+    // Mas porque precisa passar para o domain e dps transformar em entity?
     public static VehicleResponse toVehicleResponse(Vehicle v) {
         return new VehicleResponse(
                 v.getId(),
@@ -56,6 +57,7 @@ public class VehicleMapper {
         );
     }
 
+    // Ele pega a entidade pura do dominio e transforma em lista de request
     public static List<VehicleResponse> toVehicleResponseList(List<Vehicle> vehicles) {
         return vehicles.stream()
                 .map(VehicleMapper::toVehicleResponse)

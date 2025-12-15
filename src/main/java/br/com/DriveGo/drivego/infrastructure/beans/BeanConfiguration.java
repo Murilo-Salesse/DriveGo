@@ -3,10 +3,7 @@ package br.com.DriveGo.drivego.infrastructure.beans;
 import br.com.DriveGo.drivego.core.gateways.CategoryGateway;
 import br.com.DriveGo.drivego.core.gateways.VehicleGateway;
 import br.com.DriveGo.drivego.core.usecases.categories.*;
-import br.com.DriveGo.drivego.core.usecases.vehicles.CreateVehicleUseCase;
-import br.com.DriveGo.drivego.core.usecases.vehicles.CreateVehicleUseCaseImp;
-import br.com.DriveGo.drivego.core.usecases.vehicles.ListAllVehiclesUseCase;
-import br.com.DriveGo.drivego.core.usecases.vehicles.ListAllVehiclesUseCaseImp;
+import br.com.DriveGo.drivego.core.usecases.vehicles.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -44,5 +41,17 @@ public class BeanConfiguration {
 
     @Bean public ListAllVehiclesUseCase listAllVehiclesUseCase(VehicleGateway vehicleGateway) {
         return new ListAllVehiclesUseCaseImp(vehicleGateway);
+    }
+
+    @Bean public FindByIdVehicleUseCase findByIdVehicleUseCase(VehicleGateway vehicleGateway) {
+        return new FindByIdVehicleUseCaseImp(vehicleGateway);
+    }
+
+    @Bean public FindVehiclesUseCase findVehiclesUseCase(VehicleGateway vehicleGateway) {
+        return new FindVehiclesUseCaseImp(vehicleGateway);
+    }
+
+    @Bean public DeleteVehicleByIdUseCase deleteVehicleByIdUseCase(VehicleGateway vehicleGateway) {
+        return new DeleteVehicleByIdUseCaseImp(vehicleGateway);
     }
 }

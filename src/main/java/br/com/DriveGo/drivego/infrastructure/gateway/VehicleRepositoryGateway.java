@@ -11,6 +11,7 @@ import br.com.DriveGo.drivego.infrastructure.persistence.VehicleRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -38,8 +39,36 @@ public class VehicleRepositoryGateway implements VehicleGateway {
     public List<Vehicle> listAllVehicle() {
         List<VehicleEntity> vehicleEntities = vehicleRepository.findAll();
 
-        return  vehicleEntities.stream()
+        return vehicleEntities.stream()
                 .map(VehicleEntityMapper::toDomain)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Vehicle> findVehicles(String brand, String model, Short year, String licensePlate, String vin) {
+        List<VehicleEntity> vehicleEntityList = vehicleRepository.findVehiclesByFilters(
+                brand, model, year, licensePlate, vin);
+
+        return vehicleEntityList.stream()
+                .map(VehicleEntityMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Vehicle findById(UUID id) {
+        VehicleEntity vehicleFound = vehicleRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Veiculo não encontrado com ID: " + id));
+
+        return VehicleEntityMapper.toDomain(vehicleFound);
+    }
+
+    @Override
+    public Void deleteById(UUID id) {
+        if (!vehicleRepository.existsById(id)) {
+            throw new NotFoundException("Veiculo não encontrada");
+        }
+
+        vehicleRepository.deleteById(id);
+        return null;
     }
 }

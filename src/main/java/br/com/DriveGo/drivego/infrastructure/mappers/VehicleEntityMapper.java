@@ -7,7 +7,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class VehicleEntityMapper {
 
-    // Domain → Entity
+    // Pega o dominio puro e transforma em entidade
     public static VehicleEntity toEntity(Vehicle domain, CategoryEntity categoryEntity) {
         VehicleEntity entity = new VehicleEntity();
 
@@ -27,7 +27,7 @@ public class VehicleEntityMapper {
         return entity;
     }
 
-    // Entity → Domain
+    // Pega a entidade e transforma em dominio puro
     public static Vehicle toDomain(VehicleEntity e) {
         return new Vehicle(
                 e.getId(),
