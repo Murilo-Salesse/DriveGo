@@ -31,9 +31,4 @@ public class VehicleResponse {
 
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
-
-    private List<UUID> photoIds;
-    private List<UUID> reservationIds;
-    private List<UUID> maintenanceRecordIds;
-    private List<UUID> damageIds;
 }

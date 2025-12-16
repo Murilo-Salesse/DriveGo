@@ -29,7 +29,8 @@ public class VehicleEntity {
     private UUID id;
 
     @NotBlank
-    private String license_plate;
+    @Column(name = "license_plate")  // Mapeia para o banco
+    private String licensePlate;      // camelCase no Java
 
     @NotBlank
     private String vin;
@@ -49,21 +50,23 @@ public class VehicleEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "vehicle_status")
-    private Status vehicle_status = Status.AVAILABLE;
+    private Status vehicleStatus = Status.AVAILABLE;
 
     @NotNull
     private Long mileage;
 
     @NotNull
-    private BigDecimal daily_price;
+    @Column(name = "daily_price")
+    private BigDecimal dailyPrice;
 
     @CreationTimestamp
-    private LocalDateTime created_at;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updated_at;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
-    // usar new arraylist para quando não existir nada no array poder vir como null e não dar erro
     @OneToMany(mappedBy = "vehicle")
     private List<VehiclePhotosEntity> photos = new ArrayList<>();
 

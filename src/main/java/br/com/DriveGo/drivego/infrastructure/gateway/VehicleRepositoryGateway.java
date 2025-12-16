@@ -2,6 +2,7 @@ package br.com.DriveGo.drivego.infrastructure.gateway;
 
 import br.com.DriveGo.drivego.core.entities.Vehicle;
 import br.com.DriveGo.drivego.core.gateways.VehicleGateway;
+import br.com.DriveGo.drivego.infrastructure.exceptions.DuplicateException;
 import br.com.DriveGo.drivego.infrastructure.exceptions.NotFoundException;
 import br.com.DriveGo.drivego.infrastructure.mappers.VehicleEntityMapper;
 import br.com.DriveGo.drivego.infrastructure.persistence.CategoryEntity;
@@ -11,6 +12,7 @@ import br.com.DriveGo.drivego.infrastructure.persistence.VehicleRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -27,10 +29,35 @@ public class VehicleRepositoryGateway implements VehicleGateway {
 
     @Override
     public Vehicle createVehicle(Vehicle vehicle) {
-        CategoryEntity category = categoryRepository.findById(vehicle.getCategory_id())
-                .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
 
-        VehicleEntity saved = vehicleRepository.save(VehicleEntityMapper.toEntity(vehicle, category));
+        Optional<VehicleEntity> foundWithPlate = vehicleRepository.findByLicensePlate(vehicle.getLicense_plate());
+        Optional<VehicleEntity> foundWithVin = vehicleRepository.findByVin(vehicle.getVin());
+
+        if (foundWithPlate.isPresent() && foundWithVin.isPresent()) {
+            throw new DuplicateException(
+                    "Veículo com placa " + vehicle.getLicense_plate() +
+                            " e VIN " + vehicle.getVin() + " já estão cadastrados"
+            );
+        }
+        if (foundWithPlate.isPresent()) {
+            throw new DuplicateException(
+                    "Veículo com placa " + vehicle.getLicense_plate() + " já está cadastrado"
+            );
+        }
+        if (foundWithVin.isPresent()) {
+            throw new DuplicateException(
+                    "Veículo com VIN " + vehicle.getVin() + " já está cadastrado"
+            );
+        }
+
+        CategoryEntity category = categoryRepository.findById(vehicle.getCategory_id())
+                .orElseThrow(() -> new NotFoundException(
+                        "Categoria com ID " + vehicle.getCategory_id() + " não encontrada"
+                ));
+
+        VehicleEntity saved = vehicleRepository.save(
+                VehicleEntityMapper.toEntity(vehicle, category)
+        );
 
         return VehicleEntityMapper.toDomain(saved);
     }

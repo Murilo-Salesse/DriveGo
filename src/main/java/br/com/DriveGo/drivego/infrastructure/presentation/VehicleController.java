@@ -3,7 +3,6 @@ package br.com.DriveGo.drivego.infrastructure.presentation;
 import br.com.DriveGo.drivego.core.entities.Vehicle;
 import br.com.DriveGo.drivego.core.usecases.vehicles.*;
 import br.com.DriveGo.drivego.infrastructure.dtos.requests.VehicleRequest;
-import br.com.DriveGo.drivego.infrastructure.mappers.CategoryMapper;
 import br.com.DriveGo.drivego.infrastructure.mappers.VehicleMapper;
 import jakarta.validation.Valid;
 import lombok.NonNull;

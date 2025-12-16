@@ -5,8 +5,6 @@ import br.com.DriveGo.drivego.core.enums.Status;
 import br.com.DriveGo.drivego.infrastructure.dtos.requests.VehicleRequest;
 import br.com.DriveGo.drivego.infrastructure.dtos.responses.VehicleResponse;
 import lombok.experimental.UtilityClass;
-
-import java.math.BigDecimal;
 import java.util.List;
 
 @UtilityClass
@@ -16,15 +14,15 @@ public class VehicleMapper {
     public static Vehicle toVehicleDomain(VehicleRequest request) {
         return new Vehicle(
                 null,
-                request.getPlate(),
+                request.getLicensePlate(),
                 request.getVin(),
                 request.getBrand(),
                 request.getModel(),
-                request.getYear().shortValue(),
-                request.getCategory_id(),
+                request.getYear(),
+                request.getCategoryId(),
                 Status.AVAILABLE,
                 request.getMileage(),
-                BigDecimal.valueOf(request.getDaily_price()),
+                request.getDailyPrice(),
                 null,
                 null,
                 null,
@@ -49,11 +47,7 @@ public class VehicleMapper {
                 v.getMileage(),
                 v.getDaily_price(),
                 v.getCreated_at(),
-                v.getUpdated_at(),
-                v.getPhotoIds(),
-                v.getReservationIds(),
-                v.getMaintenanceRecordIds(),
-                v.getDamageIds()
+                v.getUpdated_at()
         );
     }
 

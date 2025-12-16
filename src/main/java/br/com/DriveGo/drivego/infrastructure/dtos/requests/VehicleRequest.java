@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -16,7 +17,7 @@ import java.util.UUID;
 public class VehicleRequest {
 
     @NotBlank
-    private String plate;
+    private String licensePlate;  // Muda de "plate" para "licensePlate"
 
     @NotBlank
     private String vin;
@@ -28,17 +29,14 @@ public class VehicleRequest {
     private String model;
 
     @NotNull
-    private Integer year;
-
-    @NotBlank
-    private String color;
+    private Short year;  // Muda de Integer para Short
 
     @NotNull
-    private Double daily_price;
+    private BigDecimal dailyPrice;  // Muda de Double para BigDecimal e nome para camelCase
 
     @NotNull
     private Long mileage;
 
     @NotNull
-    private UUID category_id;
+    private UUID categoryId;  // Muda de category_id para categoryId
 }

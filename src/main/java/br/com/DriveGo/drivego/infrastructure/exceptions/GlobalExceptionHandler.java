@@ -1,6 +1,5 @@
 package br.com.DriveGo.drivego.infrastructure.exceptions;
 
-
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +18,29 @@ public class GlobalExceptionHandler {
         Map<String, Object> response = Map.of(
                 "timestamp", LocalDateTime.now().toString(),
                 "status", 404,
-                "error", "OPS, ID não encontrado",
+                "error", "Not Found",
                 "message", ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
+    @ExceptionHandler(DuplicateException.class)
+    public ResponseEntity<@NonNull Map<String, Object>> handleDuplicate(DuplicateException ex) {
+        Map<String, Object> response = Map.of(
+                "timestamp", LocalDateTime.now().toString(),
+                "status", 409,
+                "error", "Conflict",
+                "message", ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<@NonNull Map<String, Object>> handleEndpointNotFound(Exception ex) {
+    public ResponseEntity<@NonNull Map<String, Object>> handleEndpointNotFound(NoHandlerFoundException ex) {
         Map<String, Object> response = Map.of(
                 "timestamp", LocalDateTime.now().toString(),
                 "status", 404,
-                "error", "OPS, página não encontrada",
+                "error", "Endpoint Not Found",
                 "message", "O endpoint solicitado não existe."
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -41,7 +51,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> response = Map.of(
                 "timestamp", LocalDateTime.now().toString(),
                 "status", 500,
-                "error", "OPS, algo deu errado no servidor",
+                "error", "Internal Server Error",
                 "message", ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

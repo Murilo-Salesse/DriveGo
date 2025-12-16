@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface VehicleRepository extends JpaRepository<VehicleEntity, UUID> {
@@ -25,4 +26,7 @@ public interface VehicleRepository extends JpaRepository<VehicleEntity, UUID> {
             @Param("licensePlate") String licensePlate,
             @Param("vin") String vin
     );
+
+    Optional<VehicleEntity> findByLicensePlate(String licensePlate);
+    Optional<VehicleEntity> findByVin(String vin);
 }

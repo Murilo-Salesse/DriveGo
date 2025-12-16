@@ -8,44 +8,45 @@ import lombok.experimental.UtilityClass;
 public class VehicleEntityMapper {
 
     // Pega o dominio puro e transforma em entidade
-    public static VehicleEntity toEntity(Vehicle domain, CategoryEntity categoryEntity) {
+    public static VehicleEntity toEntity(Vehicle vehicle, CategoryEntity category) {
         VehicleEntity entity = new VehicleEntity();
 
-        entity.setId(domain.getId());
-        entity.setLicense_plate(domain.getLicense_plate());
-        entity.setVin(domain.getVin());
-        entity.setBrand(domain.getBrand());
-        entity.setModel(domain.getModel());
-        entity.setYear(domain.getYear());
-        entity.setCategory(categoryEntity);
-        entity.setVehicle_status(domain.getStatus());
-        entity.setMileage(domain.getMileage());
-        entity.setDaily_price(domain.getDaily_price());
-        entity.setCreated_at(domain.getCreated_at());
-        entity.setUpdated_at(domain.getUpdated_at());
+        entity.setId(vehicle.getId());
+        entity.setLicensePlate(vehicle.getLicense_plate());
+        entity.setVin(vehicle.getVin());
+        entity.setBrand(vehicle.getBrand());
+        entity.setModel(vehicle.getModel());
+        entity.setYear(vehicle.getYear());
+        entity.setCategory(category);
+        entity.setVehicleStatus(vehicle.getStatus());
+        entity.setMileage(vehicle.getMileage());
+        entity.setDailyPrice(vehicle.getDaily_price());
+        entity.setCreatedAt(vehicle.getCreated_at());
+        entity.setUpdatedAt(vehicle.getUpdated_at());
 
         return entity;
     }
 
+
     // Pega a entidade e transforma em dominio puro
-    public static Vehicle toDomain(VehicleEntity e) {
+    public static Vehicle toDomain(VehicleEntity entity) {
         return new Vehicle(
-                e.getId(),
-                e.getLicense_plate(),
-                e.getVin(),
-                e.getBrand(),
-                e.getModel(),
-                e.getYear(),
-                e.getCategory().getId(),
-                e.getVehicle_status(),
-                e.getMileage(),
-                e.getDaily_price(),
-                e.getCreated_at(),
-                e.getUpdated_at(),
-                e.getPhotos().stream().map(VehiclePhotosEntity::getId).toList(),
-                e.getReservations().stream().map(ReservationEntity::getId).toList(),
-                e.getMaintenanceRecords().stream().map(MaintenanceRecordsEntity::getId).toList(),
-                e.getDamages().stream().map(DamageEntity::getId).toList()
+                entity.getId(),
+                entity.getLicensePlate(),  // Entity usa camelCase
+                entity.getVin(),
+                entity.getBrand(),
+                entity.getModel(),
+                entity.getYear(),
+                entity.getCategory() != null ? entity.getCategory().getId() : null,
+                entity.getVehicleStatus(),
+                entity.getMileage(),
+                entity.getDailyPrice(),  // Entity usa camelCase
+                entity.getCreatedAt(),
+                entity.getUpdatedAt(),
+                entity.getPhotos().stream().map(VehiclePhotosEntity::getId).toList(),
+                entity.getReservations().stream().map(ReservationEntity::getId).toList(),
+                entity.getMaintenanceRecords().stream().map(MaintenanceRecordsEntity::getId).toList(),
+                entity.getDamages().stream().map(DamageEntity::getId).toList()
         );
     }
 }
