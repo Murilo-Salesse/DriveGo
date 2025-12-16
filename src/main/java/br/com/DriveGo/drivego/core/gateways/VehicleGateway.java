@@ -15,6 +15,7 @@ public interface VehicleGateway {
             String licensePlate,
             String vin
     );
+    Vehicle updateVehicle(Vehicle vehicle, UUID id);
     Vehicle findById(UUID id);
     Void deleteById(UUID id);
 }

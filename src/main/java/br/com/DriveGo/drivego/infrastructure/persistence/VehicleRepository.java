@@ -29,4 +29,7 @@ public interface VehicleRepository extends JpaRepository<VehicleEntity, UUID> {
 
     Optional<VehicleEntity> findByLicensePlate(String licensePlate);
     Optional<VehicleEntity> findByVin(String vin);
+
+    Optional<VehicleEntity> findByLicensePlateAndIdNot(String licensePlate, UUID id);
+    Optional<VehicleEntity> findByVinAndIdNot(String vin, UUID id);
 }

@@ -29,26 +29,7 @@ public class VehicleRepositoryGateway implements VehicleGateway {
 
     @Override
     public Vehicle createVehicle(Vehicle vehicle) {
-
-        Optional<VehicleEntity> foundWithPlate = vehicleRepository.findByLicensePlate(vehicle.getLicense_plate());
-        Optional<VehicleEntity> foundWithVin = vehicleRepository.findByVin(vehicle.getVin());
-
-        if (foundWithPlate.isPresent() && foundWithVin.isPresent()) {
-            throw new DuplicateException(
-                    "Veículo com placa " + vehicle.getLicense_plate() +
-                            " e VIN " + vehicle.getVin() + " já estão cadastrados"
-            );
-        }
-        if (foundWithPlate.isPresent()) {
-            throw new DuplicateException(
-                    "Veículo com placa " + vehicle.getLicense_plate() + " já está cadastrado"
-            );
-        }
-        if (foundWithVin.isPresent()) {
-            throw new DuplicateException(
-                    "Veículo com VIN " + vehicle.getVin() + " já está cadastrado"
-            );
-        }
+        getVehicleWithPlateOrVin(vehicle);
 
         CategoryEntity category = categoryRepository.findById(vehicle.getCategory_id())
                 .orElseThrow(() -> new NotFoundException(
@@ -82,6 +63,34 @@ public class VehicleRepositoryGateway implements VehicleGateway {
     }
 
     @Override
+    public Vehicle updateVehicle(Vehicle vehicle, UUID id) {
+        VehicleEntity vehicleFound = vehicleRepository.findById(id)
+                .orElseThrow(() ->
+                        new NotFoundException("Veículo não encontrado com ID: " + id)
+                );
+
+        CategoryEntity category = categoryRepository.findById(vehicle.getCategory_id())
+                .orElseThrow(() ->
+                        new NotFoundException("Categoria não encontrada com ID: " + vehicle.getCategory_id())
+                );
+
+        validatePlateAndVinOnUpdate(vehicle, id);
+
+        vehicleFound.setLicensePlate(vehicle.getLicense_plate());
+        vehicleFound.setVin(vehicle.getVin());
+        vehicleFound.setBrand(vehicle.getBrand());
+        vehicleFound.setModel(vehicle.getModel());
+        vehicleFound.setYear(vehicle.getYear());
+        vehicleFound.setCategory(category);
+        vehicleFound.setMileage(vehicle.getMileage());
+        vehicleFound.setDailyPrice(vehicle.getDaily_price());
+
+        VehicleEntity saved = vehicleRepository.save(vehicleFound);
+
+        return VehicleEntityMapper.toDomain(saved);
+    }
+
+    @Override
     public Vehicle findById(UUID id) {
         VehicleEntity vehicleFound = vehicleRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Veiculo não encontrado com ID: " + id));
@@ -97,5 +106,44 @@ public class VehicleRepositoryGateway implements VehicleGateway {
 
         vehicleRepository.deleteById(id);
         return null;
+    }
+
+    private void getVehicleWithPlateOrVin(Vehicle vehicle) {
+        Optional<VehicleEntity> foundWithPlate = vehicleRepository.findByLicensePlate(vehicle.getLicense_plate());
+        Optional<VehicleEntity> foundWithVin = vehicleRepository.findByVin(vehicle.getVin());
+
+        if (foundWithPlate.isPresent() && foundWithVin.isPresent()) {
+            throw new DuplicateException(
+                    "Veículo com placa " + vehicle.getLicense_plate() +
+                            " e VIN " + vehicle.getVin() + " já estão cadastrados"
+            );
+        }
+        if (foundWithPlate.isPresent()) {
+            throw new DuplicateException(
+                    "Veículo com placa " + vehicle.getLicense_plate() + " já está cadastrado"
+            );
+        }
+        if (foundWithVin.isPresent()) {
+            throw new DuplicateException(
+                    "Veículo com VIN " + vehicle.getVin() + " já está cadastrado"
+            );
+        }
+    }
+
+    private void validatePlateAndVinOnUpdate(Vehicle vehicle, UUID id) {
+        if (vehicleRepository
+                .findByLicensePlateAndIdNot(vehicle.getLicense_plate(), id)
+                .isPresent()) {
+            throw new DuplicateException(
+                    "Veículo com placa " + vehicle.getLicense_plate() + " já está cadastrado"
+            );
+        }
+        if (vehicleRepository
+                .findByVinAndIdNot(vehicle.getVin(), id)
+                .isPresent()) {
+            throw new DuplicateException(
+                    "Veículo com VIN " + vehicle.getVin() + " já está cadastrado"
+            );
+        }
     }
 }

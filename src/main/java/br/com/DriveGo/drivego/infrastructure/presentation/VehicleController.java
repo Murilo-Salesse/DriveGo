@@ -21,14 +21,16 @@ public class VehicleController {
     private final ListAllVehiclesUseCase listAllVehiclesUseCase;
     private final FindByIdVehicleUseCase findByIdVehicleUseCase;
     private final FindVehiclesUseCase findVehiclesUseCase;
+    private final UpdateVehicleUseCase updateVehicleUseCase;
     private final DeleteVehicleByIdUseCase deleteVehicleByIdUseCase;
 
-    public VehicleController(CreateVehicleUseCase createVehicleUseCase, ListAllVehiclesUseCase listAllVehiclesUseCase, FindByIdVehicleUseCase findByIdVehicleUseCase, DeleteVehicleByIdUseCase deleteVehicleByIdUseCase, FindVehiclesUseCase findVehiclesUseCase) {
+    public VehicleController(CreateVehicleUseCase createVehicleUseCase, ListAllVehiclesUseCase listAllVehiclesUseCase, FindByIdVehicleUseCase findByIdVehicleUseCase, DeleteVehicleByIdUseCase deleteVehicleByIdUseCase, FindVehiclesUseCase findVehiclesUseCase, UpdateVehicleUseCase updateVehicleUseCase) {
         this.createVehicleUseCase = createVehicleUseCase;
         this.listAllVehiclesUseCase = listAllVehiclesUseCase;
         this.findByIdVehicleUseCase = findByIdVehicleUseCase;
         this.findVehiclesUseCase = findVehiclesUseCase;
         this.deleteVehicleByIdUseCase = deleteVehicleByIdUseCase;
+        this.updateVehicleUseCase = updateVehicleUseCase;
     }
 
     @PostMapping("/create")
@@ -82,6 +84,18 @@ public class VehicleController {
         Map<String, Object> response = Map.of(
                 "message", "Veiculo(s) encontrado(s) com sucesso.",
                 "vehicles", VehicleMapper.toVehicleResponseList(foundVehicleList)
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity<@NonNull Map<String, Object>> updateVehicle(@Valid  @RequestBody VehicleRequest request, @PathVariable("id") UUID id) {
+        Vehicle updatedVehicle = updateVehicleUseCase.execute(VehicleMapper.toVehicleDomain(request), id);
+
+        Map<String, Object> response = Map.of(
+                "message", "Veiculo atualizado com sucesso.",
+                "vehicle", VehicleMapper.toVehicleResponse(updatedVehicle)
         );
 
         return ResponseEntity.ok(response);

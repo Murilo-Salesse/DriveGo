@@ -4,6 +4,7 @@ import br.com.DriveGo.drivego.core.gateways.CategoryGateway;
 import br.com.DriveGo.drivego.core.gateways.VehicleGateway;
 import br.com.DriveGo.drivego.core.usecases.categories.*;
 import br.com.DriveGo.drivego.core.usecases.vehicles.*;
+import br.com.DriveGo.drivego.infrastructure.dtos.requests.VehicleRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -49,6 +50,10 @@ public class BeanConfiguration {
 
     @Bean public FindVehiclesUseCase findVehiclesUseCase(VehicleGateway vehicleGateway) {
         return new FindVehiclesUseCaseImp(vehicleGateway);
+    }
+
+    @Bean public UpdateVehicleUseCase updateVehicleUseCase(VehicleGateway vehicleGateway) {
+        return new UpdateVehicleUseCaseImp(vehicleGateway);
     }
 
     @Bean public DeleteVehicleByIdUseCase deleteVehicleByIdUseCase(VehicleGateway vehicleGateway) {
