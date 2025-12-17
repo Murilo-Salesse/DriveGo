@@ -1,6 +1,8 @@
 package br.com.DriveGo.drivego.core.entities;
 
 import br.com.DriveGo.drivego.core.enums.Roles;
+import br.com.DriveGo.drivego.core.enums.UserStatus;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -10,22 +12,28 @@ public class User {
 
     private UUID id;
     private String email;
-    private String password_hash;
-    private String full_name;
-    private Roles user_role;
+    private String passwordHash;
+    private String googleId;
+    private String fullName;
+    private Roles role;
+    private UserStatus status;
     private String phone;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private LocalDateTime lastLoginAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    public User(UUID id, String email, String password_hash, String full_name, Roles user_role, String phone, LocalDateTime created_at, LocalDateTime updated_at) {
+    public User(UUID id, String email, String passwordHash, String googleId, String fullName, Roles role, UserStatus status, String phone, LocalDateTime lastLoginAt, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.email = email;
-        this.password_hash = password_hash;
-        this.full_name = full_name;
-        this.user_role = user_role;
+        this.passwordHash = passwordHash;
+        this.googleId = googleId;
+        this.fullName = fullName;
+        this.role = role;
+        this.status = status;
         this.phone = phone;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.lastLoginAt = lastLoginAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public UUID getId() {
@@ -44,28 +52,44 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword_hash() {
-        return password_hash;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword_hash(String password_hash) {
-        this.password_hash = password_hash;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
-    public String getFull_name() {
-        return full_name;
+    public String getGoogleId() {
+        return googleId;
     }
 
-    public void setFull_name(String full_name) {
-        this.full_name = full_name;
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
     }
 
-    public Roles getUser_role() {
-        return user_role;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setUser_role(Roles user_role) {
-        this.user_role = user_role;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public Roles getRole() {
+        return role;
+    }
+
+    public void setRole(Roles role) {
+        this.role = role;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
     }
 
     public String getPhone() {
@@ -76,32 +100,40 @@ public class User {
         this.phone = phone;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getLastLoginAt() {
+        return lastLoginAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setLastLoginAt(LocalDateTime lastLoginAt) {
+        this.lastLoginAt = lastLoginAt;
     }
 
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password_hash, user.password_hash) && Objects.equals(full_name, user.full_name) && user_role == user.user_role && Objects.equals(phone, user.phone) && Objects.equals(created_at, user.created_at) && Objects.equals(updated_at, user.updated_at);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(passwordHash, user.passwordHash) && Objects.equals(googleId, user.googleId) && Objects.equals(fullName, user.fullName) && role == user.role && status == user.status && Objects.equals(phone, user.phone) && Objects.equals(lastLoginAt, user.lastLoginAt) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password_hash, full_name, user_role, phone, created_at, updated_at);
+        return Objects.hash(id, email, passwordHash, googleId, fullName, role, status, phone, lastLoginAt, createdAt, updatedAt);
     }
 
     @Override
@@ -109,12 +141,15 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
-                ", password_hash='" + password_hash + '\'' +
-                ", full_name='" + full_name + '\'' +
-                ", user_role=" + user_role +
+                ", passwordHash='" + passwordHash + '\'' +
+                ", googleId='" + googleId + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", role=" + role +
+                ", status=" + status +
                 ", phone='" + phone + '\'' +
-                ", created_at=" + created_at +
-                ", updated_at=" + updated_at +
+                ", lastLoginAt=" + lastLoginAt +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

@@ -1,6 +1,7 @@
 package br.com.DriveGo.drivego.infrastructure.persistence;
 
 import br.com.DriveGo.drivego.core.enums.Roles;
+import br.com.DriveGo.drivego.core.enums.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -14,36 +15,40 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(columnDefinition = "uuid")
     private UUID id;
 
-    @NotBlank
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @NotBlank
-    private String password_hash;
+    private String passwordHash;
 
-    @NotBlank
-    private String full_name;
+    private String googleId;
+
+    @Column(nullable = false)
+    private String fullName;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "user_role")
-    private Roles user_role = Roles.CLIENT;
+    private Roles role = Roles.CLIENT;
+
+    @Enumerated(EnumType.STRING)
+    private UserStatus status = UserStatus.PENDING;
 
     private String phone;
 
+    private LocalDateTime lastLoginAt;
+
     @CreationTimestamp
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user")
     private List<ReservationEntity> reservations;
