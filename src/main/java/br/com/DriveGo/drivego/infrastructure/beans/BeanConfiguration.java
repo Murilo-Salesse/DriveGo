@@ -2,9 +2,10 @@ package br.com.DriveGo.drivego.infrastructure.beans;
 
 import br.com.DriveGo.drivego.core.gateways.CategoryGateway;
 import br.com.DriveGo.drivego.core.gateways.VehicleGateway;
+import br.com.DriveGo.drivego.core.gateways.VehiclePhotoGateway;
 import br.com.DriveGo.drivego.core.usecases.categories.*;
 import br.com.DriveGo.drivego.core.usecases.vehicles.*;
-import br.com.DriveGo.drivego.infrastructure.dtos.requests.VehicleRequest;
+import br.com.DriveGo.drivego.core.usecases.vehiclesPhotos.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -58,5 +59,26 @@ public class BeanConfiguration {
 
     @Bean public DeleteVehicleByIdUseCase deleteVehicleByIdUseCase(VehicleGateway vehicleGateway) {
         return new DeleteVehicleByIdUseCaseImp(vehicleGateway);
+    }
+
+
+    @Bean public CreateVehiclePhotoUseCase createVehiclePhotoUseCase(VehiclePhotoGateway vehiclePhotoGateway) {
+        return new CreateVehiclePhotoUseCaseImp(vehiclePhotoGateway);
+    }
+
+    @Bean public ListAllVehiclePhotosUseCase listAllVehiclePhotosUseCase(VehiclePhotoGateway vehiclePhotoGateway) {
+        return new ListAllVehiclePhotosUseCaseImp(vehiclePhotoGateway);
+    }
+
+    @Bean public FindByIdVehiclePhotoUseCase findByIdVehiclePhotoUseCase(VehiclePhotoGateway vehiclePhotoGateway) {
+        return new FindByIdVehiclePhotoUseCaseImp(vehiclePhotoGateway);
+    }
+
+    @Bean public UpdatePhotoVehiclePhotoUseCase updatePhotoVehiclePhotoUseCase(VehiclePhotoGateway vehiclePhotoGateway) {
+        return new UpdatePhotoVehiclePhotoUseCaseImp(vehiclePhotoGateway);
+    }
+
+    @Bean public DeleteVehiclePhotoByIdUseCase deleteVehiclePhotoByIdUseCase(VehiclePhotoGateway vehiclePhotoGateway) {
+        return new DeleteVehiclePhotoByIdUseCaseImp(vehiclePhotoGateway);
     }
 }

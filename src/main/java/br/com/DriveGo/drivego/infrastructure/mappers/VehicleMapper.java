@@ -33,7 +33,6 @@ public class VehicleMapper {
     }
 
     // Ele pega a entidade pura do dominio e transforma em request
-    // Mas porque precisa passar para o domain e dps transformar em entity?
     public static VehicleResponse toVehicleResponse(Vehicle v) {
         return new VehicleResponse(
                 v.getId(),
