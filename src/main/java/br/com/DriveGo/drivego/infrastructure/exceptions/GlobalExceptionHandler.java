@@ -38,6 +38,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<@NonNull Map<String, Object>> handleUnauthorizes(UnauthorizedException ex) {
+        Map<String, Object> response = Map.of(
+                "timestamp", LocalDateTime.now().toString(),
+                "status", 401,
+                "error", "Not authorized",
+                "message", ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<@NonNull Map<String, Object>> handleEndpointNotFound(NoHandlerFoundException ex) {
         Map<String, Object> response = Map.of(

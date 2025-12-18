@@ -8,8 +8,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class VehiclePhotoRequest {
 
     @NotBlank

@@ -11,6 +11,7 @@ public class VehicleEntityMapper {
     public static VehicleEntity toEntity(Vehicle vehicle, CategoryEntity category) {
         VehicleEntity entity = new VehicleEntity();
 
+        entity.setId(vehicle.getId());
         entity.setLicensePlate(vehicle.getLicense_plate());
         entity.setVin(vehicle.getVin());
         entity.setBrand(vehicle.getBrand());

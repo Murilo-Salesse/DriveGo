@@ -12,13 +12,12 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class VehicleRequest {
 
     @NotBlank
-    private String licensePlate;  // Muda de "plate" para "licensePlate"
-
+    private String licensePlate;
     @NotBlank
     private String vin;
 
@@ -29,14 +28,14 @@ public class VehicleRequest {
     private String model;
 
     @NotNull
-    private Short year;  // Muda de Integer para Short
+    private Short year;
 
     @NotNull
-    private BigDecimal dailyPrice;  // Muda de Double para BigDecimal e nome para camelCase
+    private BigDecimal dailyPrice;
 
     @NotNull
     private Long mileage;
 
     @NotNull
-    private UUID categoryId;  // Muda de category_id para categoryId
+    private UUID categoryId;
 }

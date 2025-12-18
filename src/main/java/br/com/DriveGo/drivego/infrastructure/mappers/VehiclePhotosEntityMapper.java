@@ -12,6 +12,7 @@ public class VehiclePhotosEntityMapper {
     public static VehiclePhotosEntity toEntity(VehiclePhoto vehiclePhoto, VehicleEntity vehicleEntity) {
         VehiclePhotosEntity entity = new VehiclePhotosEntity();
 
+        entity.setId(vehicleEntity.getId());
         entity.setVehicle(vehicleEntity);
         entity.setUrl(vehiclePhoto.getUrl());
 

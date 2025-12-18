@@ -5,7 +5,7 @@ import br.com.DriveGo.drivego.core.usecases.categories.*;
 import br.com.DriveGo.drivego.infrastructure.dtos.requests.CategoryRequest;
 import br.com.DriveGo.drivego.infrastructure.mappers.CategoryMapper;
 import jakarta.validation.Valid;
-import lombok.NonNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +24,12 @@ public class CategoryController {
     private final UpdateCategoryUseCase updateCategoryUseCase;
     private final ListCategoryByNameUseCase listCategoryByNameUseCase;
 
-    public CategoryController(CreateCategoryUseCase createCategoryUseCase, FindByIdCategoryUseCase findByIdCategoryUseCase, ListAllCategoryUseCase listAllCategoryUseCase, DeleteCategoryUseCase deleteCategoryUseCase, UpdateCategoryUseCase updateCategoryUseCase, ListCategoryByNameUseCase listCategoryByNameUseCase) {
+    public CategoryController(CreateCategoryUseCase createCategoryUseCase,
+                              FindByIdCategoryUseCase findByIdCategoryUseCase,
+                              ListAllCategoryUseCase listAllCategoryUseCase,
+                              DeleteCategoryUseCase deleteCategoryUseCase,
+                              UpdateCategoryUseCase updateCategoryUseCase,
+                              ListCategoryByNameUseCase listCategoryByNameUseCase) {
         this.createCategoryUseCase = createCategoryUseCase;
         this.findByIdCategoryUseCase = findByIdCategoryUseCase;
         this.listAllCategoryUseCase = listAllCategoryUseCase;
@@ -34,67 +39,85 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<@NonNull Map<String, Object>> createCategory(@Valid @RequestBody CategoryRequest request) {
-        Category newCategory = createCategoryUseCase.execute(CategoryMapper.toCategoryEntity(request));
+    public ResponseEntity<Map<String, Object>> createCategory(
+            @Valid @RequestBody CategoryRequest request) {
 
-        Map<String, Object> response = Map.of(
+        Category newCategory = createCategoryUseCase.execute(
+                CategoryMapper.toCategoryEntity(request));
+
+        Map<String, Object> data = Map.of(
                 "message", "Categoria criada com sucesso.",
                 "category", CategoryMapper.toCategoryRequest(newCategory)
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("data", data));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<@NonNull  Map<String, Object>> listAllCategories() {
+    public ResponseEntity<Map<String, Object>> listAllCategories() {
         List<Category> categories = listAllCategoryUseCase.execute();
 
-        Map<String, Object> response = Map.of(
+        Map<String, Object> data = Map.of(
                 "message", "Categoria(s) encontrada(s) com sucesso.",
-                "vehicle", CategoryMapper.toCategoryRequestList(categories));
+                "categories", CategoryMapper.toCategoryRequestList(categories)
+        );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("data", data));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<@NonNull Map<String, Object>> findCategoryById(@PathVariable("id") UUID id) {
+    public ResponseEntity<Map<String, Object>> findCategoryById(
+            @PathVariable("id") UUID id) {
+
         Category findCategory = findByIdCategoryUseCase.execute(id);
 
-        Map<String, Object> response = Map.of(
+        Map<String, Object> data = Map.of(
                 "message", "Categoria encontrada com sucesso.",
                 "category", CategoryMapper.toCategoryRequest(findCategory)
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("data", data));
     }
 
     @GetMapping("/find/")
-    public ResponseEntity<@NonNull Map<String, Object>> findCategoryByName(@RequestParam("name") String name) {
+    public ResponseEntity<Map<String, Object>> findCategoryByName(
+            @RequestParam("name") String name) {
+
         List<Category> findCategory = listCategoryByNameUseCase.execute(name);
 
-        Map<String, Object> response = Map.of(
+        Map<String, Object> data = Map.of(
                 "message", "Categoria(s) encontrada(s) com sucesso.",
-                "category", CategoryMapper.toCategoryRequestList(findCategory)
+                "categories", CategoryMapper.toCategoryRequestList(findCategory)
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("data", data));
     }
 
-    @PostMapping("/update/{id}")
-    public ResponseEntity<@NonNull Map<String, Object>> updateCategory(@Valid  @RequestBody CategoryRequest request, @PathVariable("id") UUID id) {
-        Category updatedCategory = updateCategoryUseCase.execute(CategoryMapper.toCategoryEntity(request), id);
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> updateCategory(
+            @Valid @RequestBody CategoryRequest request,
+            @PathVariable("id") UUID id) {
 
-        Map<String, Object> response = Map.of(
+        Category updatedCategory = updateCategoryUseCase.execute(
+                CategoryMapper.toCategoryEntity(request), id);
+
+        Map<String, Object> data = Map.of(
                 "message", "Categoria atualizada com sucesso.",
                 "category", CategoryMapper.toCategoryRequest(updatedCategory)
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("data", data));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<@NonNull Void> delete(@PathVariable UUID id) {
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable UUID id) {
         deleteCategoryUseCase.execute(id);
-        return ResponseEntity.noContent().build();
+
+        Map<String, Object> data = Map.of(
+                "message", "Categoria deletada com sucesso."
+        );
+
+        return ResponseEntity.ok(Map.of("data", data));
     }
 }

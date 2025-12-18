@@ -41,36 +41,36 @@ public class VehiclePhotosController {
                 VehiclePhotosMapper.toDomain(request, vehicleId)
         );
 
-        Map<String, Object> response = Map.of(
+        Map<String, Object> data = Map.of(
                 "message", "Foto criada com sucesso.",
                 "photo", VehiclePhotosMapper.toResponse(newVehiclePhoto)
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("data", data));
     }
 
     @GetMapping("/all")
     public ResponseEntity<@NonNull  Map<String, Object>> listAllVehiclesPhotos(){
         List<VehiclePhoto> vehiclesPhotos = listAllVehiclePhotosUseCase.execute();
 
-        Map<String, Object> response = Map.of(
+        Map<String, Object> data = Map.of(
                 "message", "Foto(s) listada(s) com sucesso.",
                 "photo", VehiclePhotosMapper.vehiclePhotoResponseList(vehiclesPhotos)
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("data", data));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<@NonNull Map<String, Object>> findVehicleById(@PathVariable("id")UUID id){
         VehiclePhoto foundVehiclePhoto = findByIdVehiclePhotoUseCase.execute(id);
 
-        Map<String, Object> response = Map.of(
+        Map<String, Object> data = Map.of(
                 "message", "Foto(s) encontrada(s) com sucesso.",
                 "photo", VehiclePhotosMapper.toResponse(foundVehiclePhoto)
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("data", data));
     }
 
     @PostMapping("/update/{id}")
@@ -78,17 +78,22 @@ public class VehiclePhotosController {
                                                                            @PathVariable("id") UUID id) {
         VehiclePhoto updatedVehiclePhoto = updatePhotoVehiclePhotoUseCase.execute(VehiclePhotosMapper.toDomainForUpdate(request), id);
 
-        Map<String, Object> response = Map.of(
+        Map<String, Object> data = Map.of(
                 "message", "Veiculo atualizado com sucesso.",
                 "photo", VehiclePhotosMapper.toResponse(updatedVehiclePhoto)
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("data", data));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<@NonNull Void> delete(@PathVariable UUID id) {
+    public ResponseEntity<@NonNull Map<String, Object>> delete(@PathVariable UUID id) {
         deleteVehiclePhotoByIdUseCase.execute(id);
-        return ResponseEntity.noContent().build();
+
+        Map<String, Object> data = Map.of(
+                "message", "Foto deletada com sucesso."
+        );
+
+        return ResponseEntity.ok(Map.of("data", data));
     }
 }

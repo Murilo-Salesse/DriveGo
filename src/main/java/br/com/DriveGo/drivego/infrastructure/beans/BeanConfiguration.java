@@ -1,9 +1,10 @@
 package br.com.DriveGo.drivego.infrastructure.beans;
 
-import br.com.DriveGo.drivego.core.gateways.CategoryGateway;
-import br.com.DriveGo.drivego.core.gateways.VehicleGateway;
-import br.com.DriveGo.drivego.core.gateways.VehiclePhotoGateway;
+import br.com.DriveGo.drivego.core.gateways.*;
 import br.com.DriveGo.drivego.core.usecases.categories.*;
+import br.com.DriveGo.drivego.core.usecases.email.SendVerificationEmailUseCase;
+import br.com.DriveGo.drivego.core.usecases.users.CreateUserUseCase;
+import br.com.DriveGo.drivego.core.usecases.users.CreateUserUseCaseImp;
 import br.com.DriveGo.drivego.core.usecases.vehicles.*;
 import br.com.DriveGo.drivego.core.usecases.vehiclesPhotos.*;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BeanConfiguration {
+
 
     @Bean public CreateCategoryUseCase createCategoryUseCase(CategoryGateway categoryGateway) {
         return new CreateCategoryUseCaseImp(categoryGateway);
@@ -80,5 +82,10 @@ public class BeanConfiguration {
 
     @Bean public DeleteVehiclePhotoByIdUseCase deleteVehiclePhotoByIdUseCase(VehiclePhotoGateway vehiclePhotoGateway) {
         return new DeleteVehiclePhotoByIdUseCaseImp(vehiclePhotoGateway);
+    }
+
+
+    @Bean public CreateUserUseCase createUserUseCase(UserGateway userGateway) {
+        return new CreateUserUseCaseImp(userGateway);
     }
 }

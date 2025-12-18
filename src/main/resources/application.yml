@@ -26,3 +26,25 @@ spring:
   web:
     resources:
       add-mappings: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        SMTP:
+          auth: true
+          STARTTLS:
+            enable: true
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 3600000
+
+app:
+  admin:
+    email: admin@drivego.com
+    password: admin123
+    initialize: true

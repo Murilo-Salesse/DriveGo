@@ -5,7 +5,7 @@ import br.com.DriveGo.drivego.core.usecases.vehicles.*;
 import br.com.DriveGo.drivego.infrastructure.dtos.requests.VehicleRequest;
 import br.com.DriveGo.drivego.infrastructure.mappers.VehicleMapper;
 import jakarta.validation.Valid;
-import lombok.NonNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +24,12 @@ public class VehicleController {
     private final UpdateVehicleUseCase updateVehicleUseCase;
     private final DeleteVehicleByIdUseCase deleteVehicleByIdUseCase;
 
-    public VehicleController(CreateVehicleUseCase createVehicleUseCase, ListAllVehiclesUseCase listAllVehiclesUseCase, FindByIdVehicleUseCase findByIdVehicleUseCase, DeleteVehicleByIdUseCase deleteVehicleByIdUseCase, FindVehiclesUseCase findVehiclesUseCase, UpdateVehicleUseCase updateVehicleUseCase) {
+    public VehicleController(CreateVehicleUseCase createVehicleUseCase,
+                             ListAllVehiclesUseCase listAllVehiclesUseCase,
+                             FindByIdVehicleUseCase findByIdVehicleUseCase,
+                             DeleteVehicleByIdUseCase deleteVehicleByIdUseCase,
+                             FindVehiclesUseCase findVehiclesUseCase,
+                             UpdateVehicleUseCase updateVehicleUseCase) {
         this.createVehicleUseCase = createVehicleUseCase;
         this.listAllVehiclesUseCase = listAllVehiclesUseCase;
         this.findByIdVehicleUseCase = findByIdVehicleUseCase;
@@ -34,44 +39,49 @@ public class VehicleController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<@NonNull Map<String, Object>> createVehicle(@Valid @RequestBody VehicleRequest request){
-        Vehicle newVehicle = createVehicleUseCase.
-                execute(VehicleMapper.toVehicleDomain(request));
+    public ResponseEntity<Map<String, Object>> createVehicle(
+            @Valid @RequestBody VehicleRequest request) {
 
-        Map<String, Object> response = Map.of(
-                "message", "Veiculo criado com sucesso.",
+        Vehicle newVehicle = createVehicleUseCase.execute(
+                VehicleMapper.toVehicleDomain(request));
+
+        Map<String, Object> data = Map.of(
+                "message", "Veículo criado com sucesso.",
                 "vehicle", VehicleMapper.toVehicleResponse(newVehicle)
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("data", data));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<@NonNull  Map<String, Object>> listAllCategories(){
+    public ResponseEntity<Map<String, Object>> listAllVehicles() {
         List<Vehicle> vehicles = listAllVehiclesUseCase.listAllVehicle();
 
-        Map<String, Object> response = Map.of(
-                "message", "Veiculo(s) listado(s) com sucesso.",
-                "vehicle", VehicleMapper.toVehicleResponseList(vehicles)
+        Map<String, Object> data = Map.of(
+                "message", "Veículo(s) listado(s) com sucesso.",
+                "vehicles", VehicleMapper.toVehicleResponseList(vehicles)
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("data", data));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<@NonNull Map<String, Object>> findVehicleById(@PathVariable("id")UUID id) {
+    public ResponseEntity<Map<String, Object>> findVehicleById(
+            @PathVariable("id") UUID id) {
+
         Vehicle foundVehicle = findByIdVehicleUseCase.execute(id);
 
-        Map<String, Object> response = Map.of(
-                "message", "Veiculo encontrado com sucesso.",
+        Map<String, Object> data = Map.of(
+                "message", "Veículo encontrado com sucesso.",
                 "vehicle", VehicleMapper.toVehicleResponse(foundVehicle)
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("data", data));
     }
 
     @GetMapping("/find/")
-    public ResponseEntity<?> listVehicles(
+    public ResponseEntity<Map<String, Object>> listVehicles(
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) String model,
             @RequestParam(required = false) Short year,
@@ -81,29 +91,38 @@ public class VehicleController {
         List<Vehicle> foundVehicleList = findVehiclesUseCase.execute(
                 brand, model, year, licensePlate, vin);
 
-        Map<String, Object> response = Map.of(
-                "message", "Veiculo(s) encontrado(s) com sucesso.",
+        Map<String, Object> data = Map.of(
+                "message", "Veículo(s) encontrado(s) com sucesso.",
                 "vehicles", VehicleMapper.toVehicleResponseList(foundVehicleList)
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("data", data));
     }
 
-    @PostMapping("/update/{id}")
-    public ResponseEntity<@NonNull Map<String, Object>> updateVehicle(@Valid  @RequestBody VehicleRequest request, @PathVariable("id") UUID id) {
-        Vehicle updatedVehicle = updateVehicleUseCase.execute(VehicleMapper.toVehicleDomain(request), id);
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> updateVehicle(
+            @Valid @RequestBody VehicleRequest request,
+            @PathVariable("id") UUID id) {
 
-        Map<String, Object> response = Map.of(
-                "message", "Veiculo atualizado com sucesso.",
+        Vehicle updatedVehicle = updateVehicleUseCase.execute(
+                VehicleMapper.toVehicleDomain(request), id);
+
+        Map<String, Object> data = Map.of(
+                "message", "Veículo atualizado com sucesso.",
                 "vehicle", VehicleMapper.toVehicleResponse(updatedVehicle)
         );
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("data", data));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<@NonNull Void> delete(@PathVariable UUID id) {
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable UUID id) {
         deleteVehicleByIdUseCase.execute(id);
-        return ResponseEntity.noContent().build();
+
+        Map<String, Object> data = Map.of(
+                "message", "Veículo deletado com sucesso."
+        );
+
+        return ResponseEntity.ok(Map.of("data", data));
     }
 }

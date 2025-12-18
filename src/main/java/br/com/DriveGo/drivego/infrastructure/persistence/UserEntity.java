@@ -3,7 +3,6 @@ package br.com.DriveGo.drivego.infrastructure.persistence;
 import br.com.DriveGo.drivego.core.enums.Roles;
 import br.com.DriveGo.drivego.core.enums.UserStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -4,6 +4,8 @@ import br.com.DriveGo.drivego.core.enums.Roles;
 import br.com.DriveGo.drivego.core.enums.UserStatus;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -22,7 +24,9 @@ public class User {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public User(UUID id, String email, String passwordHash, String googleId, String fullName, Roles role, UserStatus status, String phone, LocalDateTime lastLoginAt, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private List<UUID> reservationsIds = new ArrayList<>();
+
+    public User(UUID id, String email, String passwordHash, String googleId, String fullName, Roles role, UserStatus status, String phone, LocalDateTime lastLoginAt, LocalDateTime createdAt, LocalDateTime updatedAt, List<UUID> reservationsIds) {
         this.id = id;
         this.email = email;
         this.passwordHash = passwordHash;
@@ -34,6 +38,11 @@ public class User {
         this.lastLoginAt = lastLoginAt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.reservationsIds = reservationsIds;
+    }
+
+    public User() {
+
     }
 
     public UUID getId() {
@@ -124,16 +133,24 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
+    public List<UUID> getReservationsIds() {
+        return reservationsIds;
+    }
+
+    public void setReservationsIds(List<UUID> reservationsIds) {
+        this.reservationsIds = reservationsIds;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(passwordHash, user.passwordHash) && Objects.equals(googleId, user.googleId) && Objects.equals(fullName, user.fullName) && role == user.role && status == user.status && Objects.equals(phone, user.phone) && Objects.equals(lastLoginAt, user.lastLoginAt) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(passwordHash, user.passwordHash) && Objects.equals(googleId, user.googleId) && Objects.equals(fullName, user.fullName) && role == user.role && status == user.status && Objects.equals(phone, user.phone) && Objects.equals(lastLoginAt, user.lastLoginAt) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt) && Objects.equals(reservationsIds, user.reservationsIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, passwordHash, googleId, fullName, role, status, phone, lastLoginAt, createdAt, updatedAt);
+        return Objects.hash(id, email, passwordHash, googleId, fullName, role, status, phone, lastLoginAt, createdAt, updatedAt, reservationsIds);
     }
 
     @Override
@@ -150,6 +167,7 @@ public class User {
                 ", lastLoginAt=" + lastLoginAt +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", reservationsIds=" + reservationsIds +
                 '}';
     }
 }
