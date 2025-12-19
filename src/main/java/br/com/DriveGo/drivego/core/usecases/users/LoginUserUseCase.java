@@ -4,5 +4,5 @@ import br.com.DriveGo.drivego.core.entities.User;
 
 public interface LoginUserUseCase {
 
-    User execute(User user);
+    User execute(String email);
 }

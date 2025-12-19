@@ -21,11 +21,9 @@ import java.util.Map;
 public class UserController {
 
     private final CreateUserUseCase createUserUseCase;
-    private final JwtTokenService jwtTokenService;
 
     public UserController(CreateUserUseCase createUserUseCase, JwtTokenService jwtTokenService) {
         this.createUserUseCase = createUserUseCase;
-        this.jwtTokenService = jwtTokenService;
     }
 
     @PostMapping("/register")
@@ -41,13 +39,5 @@ public class UserController {
         Map<String, Object> response = Map.of("data", data);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
-    private String generateToken(User savedUser) {
-        return jwtTokenService.generateToken(
-                savedUser.getId(),
-                savedUser.getEmail(),
-                savedUser.getRole()
-        );
     }
 }

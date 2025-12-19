@@ -1,13 +1,10 @@
 package br.com.DriveGo.drivego.infrastructure.mappers;
 
 import br.com.DriveGo.drivego.core.entities.User;
-import br.com.DriveGo.drivego.core.enums.Roles;
-import br.com.DriveGo.drivego.core.enums.UserStatus;
 import br.com.DriveGo.drivego.infrastructure.dtos.requests.UserRegisterRequest;
 import br.com.DriveGo.drivego.infrastructure.dtos.responses.UserRegisterResponse;
 import lombok.experimental.UtilityClass;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +16,17 @@ public class UserMapper {
         return new User(
                 null,
                 request.getEmail(),
-                request.getPassword(),
+                request.getPassword(), // senha crua
                 null,
                 request.getFullName(),
-                Roles.CLIENT,
-                UserStatus.PENDING,
+                null,   // role será definida no use case
+                null,   // status será definido no use case
                 request.getPhone(),
-                null,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
+                null,   // verificationCode
+                null,   // verificationExpiresAt
+                null,   // lastLoginAt
+                null,   // createdAt
+                null,   // updatedAt
                 new ArrayList<>()
         );
     }

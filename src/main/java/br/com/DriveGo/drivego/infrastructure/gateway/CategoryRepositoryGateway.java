@@ -2,7 +2,6 @@ package br.com.DriveGo.drivego.infrastructure.gateway;
 
 import br.com.DriveGo.drivego.core.entities.Category;
 import br.com.DriveGo.drivego.core.gateways.CategoryGateway;
-import br.com.DriveGo.drivego.infrastructure.exceptions.NotFoundException;
 import br.com.DriveGo.drivego.infrastructure.mappers.CategoryEntityMapper;
 import br.com.DriveGo.drivego.infrastructure.persistence.CategoryEntity;
 import br.com.DriveGo.drivego.infrastructure.persistence.CategoryRepository;
@@ -23,56 +22,54 @@ public class CategoryRepositoryGateway implements CategoryGateway {
 
     @Override
     public Category createCategory(Category category) {
-        CategoryEntity savedEntity = categoryRepository.save(CategoryEntityMapper.toEntity(category));
+        CategoryEntity savedEntity = categoryRepository.save(
+                CategoryEntityMapper.toEntity(category)
+        );
         return CategoryEntityMapper.toDomain(savedEntity);
     }
 
     @Override
-    public List<Category> getAllCategories() {
-        List<CategoryEntity> categoryList = categoryRepository.findAll();
+    public Category findById(UUID id) {
+        return categoryRepository.findById(id)
+                .map(CategoryEntityMapper::toDomain)
+                .orElse(null);
+    }
 
-        return categoryList.stream()
+    @Override
+    public Category findByName(String name) {
+        return categoryRepository.findByNameIgnoreCase(name)
+                .map(CategoryEntityMapper::toDomain)
+                .orElse(null);
+    }
+
+    @Override
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll().stream()
                 .map(CategoryEntityMapper::toDomain)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Category> getCategoryByName(String categoryName) {
-        List<CategoryEntity> categoryNamesList = categoryRepository.findCategoryByNameContainingIgnoreCase(categoryName);
-
-        return categoryNamesList.stream()
+        return categoryRepository.findCategoryByNameContainingIgnoreCase(categoryName).stream()
                 .map(CategoryEntityMapper::toDomain)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Category findById(UUID id) {
-        CategoryEntity entity = categoryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Categoria não encontrada com o ID " + id));
-
-        return CategoryEntityMapper.toDomain(entity);
-    }
-
-    @Override
     public Category updateCategory(Category category, UUID id) {
         CategoryEntity foundEntity = categoryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Categoria não encontrada com o ID " + id));
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
         foundEntity.setName(category.getName());
         foundEntity.setDescription(category.getDescription());
 
         CategoryEntity saved = categoryRepository.save(foundEntity);
-
         return CategoryEntityMapper.toDomain(saved);
     }
 
     @Override
-    public Void deleteById(UUID id) {
-        if (!categoryRepository.existsById(id)) {
-            throw new NotFoundException("Categoria não encontrada");
-        }
-
+    public void deleteById(UUID id) {
         categoryRepository.deleteById(id);
-        return null;
     }
 }

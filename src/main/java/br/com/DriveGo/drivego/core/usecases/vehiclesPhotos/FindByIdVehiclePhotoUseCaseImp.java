@@ -2,10 +2,11 @@ package br.com.DriveGo.drivego.core.usecases.vehiclesPhotos;
 
 import br.com.DriveGo.drivego.core.entities.VehiclePhoto;
 import br.com.DriveGo.drivego.core.gateways.VehiclePhotoGateway;
+import br.com.DriveGo.drivego.infrastructure.exceptions.NotFoundException;
 
 import java.util.UUID;
 
-public class FindByIdVehiclePhotoUseCaseImp implements FindByIdVehiclePhotoUseCase{
+public class FindByIdVehiclePhotoUseCaseImp implements FindByIdVehiclePhotoUseCase {
 
     private final VehiclePhotoGateway vehiclePhotoGateway;
 
@@ -15,6 +16,12 @@ public class FindByIdVehiclePhotoUseCaseImp implements FindByIdVehiclePhotoUseCa
 
     @Override
     public VehiclePhoto execute(UUID id) {
-        return vehiclePhotoGateway.findById(id);
+        VehiclePhoto photo = vehiclePhotoGateway.findById(id);
+
+        if (photo == null) {
+            throw new NotFoundException("Foto não encontrada com ID: " + id);
+        }
+
+        return photo;
     }
 }

@@ -20,13 +20,17 @@ public class User {
     private Roles role;
     private UserStatus status;
     private String phone;
+
+    private String verificationCode;
+    private LocalDateTime verificationExpiresAt;
+
     private LocalDateTime lastLoginAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     private List<UUID> reservationsIds = new ArrayList<>();
 
-    public User(UUID id, String email, String passwordHash, String googleId, String fullName, Roles role, UserStatus status, String phone, LocalDateTime lastLoginAt, LocalDateTime createdAt, LocalDateTime updatedAt, List<UUID> reservationsIds) {
+    public User(UUID id, String email, String passwordHash, String googleId, String fullName, Roles role, UserStatus status, String phone, String verificationCode, LocalDateTime verificationExpiresAt, LocalDateTime lastLoginAt, LocalDateTime createdAt, LocalDateTime updatedAt, List<UUID> reservationsIds) {
         this.id = id;
         this.email = email;
         this.passwordHash = passwordHash;
@@ -35,6 +39,8 @@ public class User {
         this.role = role;
         this.status = status;
         this.phone = phone;
+        this.verificationCode = verificationCode;
+        this.verificationExpiresAt = verificationExpiresAt;
         this.lastLoginAt = lastLoginAt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -109,6 +115,22 @@ public class User {
         this.phone = phone;
     }
 
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public LocalDateTime getVerificationExpiresAt() {
+        return verificationExpiresAt;
+    }
+
+    public void setVerificationExpiresAt(LocalDateTime verificationExpiresAt) {
+        this.verificationExpiresAt = verificationExpiresAt;
+    }
+
     public LocalDateTime getLastLoginAt() {
         return lastLoginAt;
     }
@@ -145,12 +167,12 @@ public class User {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(passwordHash, user.passwordHash) && Objects.equals(googleId, user.googleId) && Objects.equals(fullName, user.fullName) && role == user.role && status == user.status && Objects.equals(phone, user.phone) && Objects.equals(lastLoginAt, user.lastLoginAt) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt) && Objects.equals(reservationsIds, user.reservationsIds);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(passwordHash, user.passwordHash) && Objects.equals(googleId, user.googleId) && Objects.equals(fullName, user.fullName) && role == user.role && status == user.status && Objects.equals(phone, user.phone) && Objects.equals(verificationCode, user.verificationCode) && Objects.equals(verificationExpiresAt, user.verificationExpiresAt) && Objects.equals(lastLoginAt, user.lastLoginAt) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt) && Objects.equals(reservationsIds, user.reservationsIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, passwordHash, googleId, fullName, role, status, phone, lastLoginAt, createdAt, updatedAt, reservationsIds);
+        return Objects.hash(id, email, passwordHash, googleId, fullName, role, status, phone, verificationCode, verificationExpiresAt, lastLoginAt, createdAt, updatedAt, reservationsIds);
     }
 
     @Override
@@ -164,6 +186,8 @@ public class User {
                 ", role=" + role +
                 ", status=" + status +
                 ", phone='" + phone + '\'' +
+                ", verificationCode='" + verificationCode + '\'' +
+                ", verificationExpiresAt=" + verificationExpiresAt +
                 ", lastLoginAt=" + lastLoginAt +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +

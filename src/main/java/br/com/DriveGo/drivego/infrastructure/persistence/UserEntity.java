@@ -26,11 +26,13 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(name = "password_hash")
     private String passwordHash;
 
+    @Column(name = "google_id", unique = true)
     private String googleId;
 
-    @Column(nullable = false)
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
     @Enumerated(EnumType.STRING)
@@ -41,12 +43,21 @@ public class UserEntity {
 
     private String phone;
 
+    @Column(name = "verification_code")
+    private String verificationCode;
+
+    @Column(name = "verification_expires_at")
+    private LocalDateTime verificationExpiresAt;
+
+    @Column(name = "last_login_at")
     private LocalDateTime lastLoginAt;
 
     @CreationTimestamp
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user")

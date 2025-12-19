@@ -8,8 +8,8 @@ import java.util.UUID;
 public interface VehiclePhotoGateway {
 
     VehiclePhoto createVehiclePhoto(VehiclePhoto vehiclePhoto);
-    List<VehiclePhoto> listAllPhotosVehicles();
     VehiclePhoto findById(UUID id);
+    List<VehiclePhoto> listAllPhotosVehicles();
     VehiclePhoto updatePhoto(VehiclePhoto vehiclePhoto, UUID id);
-    Void deleteById(UUID id);
+    void deleteById(UUID id);
 }

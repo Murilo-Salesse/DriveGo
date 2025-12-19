@@ -1,11 +1,8 @@
 package br.com.DriveGo.drivego.infrastructure.presentation;
 
-import br.com.DriveGo.drivego.core.entities.Vehicle;
 import br.com.DriveGo.drivego.core.entities.VehiclePhoto;
 import br.com.DriveGo.drivego.core.usecases.vehiclesPhotos.*;
 import br.com.DriveGo.drivego.infrastructure.dtos.requests.VehiclePhotoRequest;
-import br.com.DriveGo.drivego.infrastructure.dtos.requests.VehicleRequest;
-import br.com.DriveGo.drivego.infrastructure.mappers.VehicleMapper;
 import br.com.DriveGo.drivego.infrastructure.mappers.VehiclePhotosMapper;
 import jakarta.validation.Valid;
 import lombok.NonNull;

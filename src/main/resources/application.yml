@@ -19,8 +19,8 @@ spring:
 
   flyway:
     enabled: true
-    baselineOnMigrate: true
-    validateOnMigrate: true
+    baseline-on-migrate: true
+    validate-on-migrate: true
     locations: classpath:db/migration
 
   web:
@@ -32,12 +32,17 @@ spring:
     port: 587
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
+    protocol: smtp
     properties:
       mail:
-        SMTP:
+        smtp:
           auth: true
-          STARTTLS:
+          starttls:
             enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
 
 jwt:
   secret: ${JWT_SECRET}

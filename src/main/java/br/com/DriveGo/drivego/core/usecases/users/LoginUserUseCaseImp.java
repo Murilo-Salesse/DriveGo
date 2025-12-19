@@ -12,7 +12,7 @@ public class LoginUserUseCaseImp implements LoginUserUseCase{
     }
 
     @Override
-    public User execute(User user) {
-        return userGateway.loginUser(user);
+    public User execute(String email) {
+        return userGateway.findByEmail(email);
     }
 }

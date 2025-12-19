@@ -7,9 +7,10 @@ import java.util.UUID;
 public interface CategoryGateway {
 
     Category createCategory(Category category);
+    Category findById(UUID id);
+    Category findByName(String name);
     List<Category> getAllCategories();
     List<Category> getCategoryByName(String categoryName);
-    Category findById(UUID id);
     Category updateCategory(Category category, UUID id);
-    Void deleteById(UUID id);
+    void deleteById(UUID id);
 }

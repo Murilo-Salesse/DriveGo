@@ -1,6 +1,7 @@
 package br.com.DriveGo.drivego.core.usecases.categories;
 import br.com.DriveGo.drivego.core.entities.Category;
 import br.com.DriveGo.drivego.core.gateways.CategoryGateway;
+import br.com.DriveGo.drivego.infrastructure.exceptions.DuplicateException;
 
 public class CreateCategoryUseCaseImp implements CreateCategoryUseCase {
 
@@ -12,6 +13,16 @@ public class CreateCategoryUseCaseImp implements CreateCategoryUseCase {
 
     @Override
     public Category execute(Category category) {
+        validateUniqueName(category.getName());
         return categoryGateway.createCategory(category);
+    }
+
+    private void validateUniqueName(String name) {
+        Category existing = categoryGateway.findByName(name);
+        if (existing != null) {
+            throw new DuplicateException(
+                    "Categoria com nome '" + name + "' já existe"
+            );
+        }
     }
 }

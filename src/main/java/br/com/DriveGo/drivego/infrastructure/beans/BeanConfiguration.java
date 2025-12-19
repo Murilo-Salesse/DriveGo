@@ -64,8 +64,8 @@ public class BeanConfiguration {
     }
 
 
-    @Bean public CreateVehiclePhotoUseCase createVehiclePhotoUseCase(VehiclePhotoGateway vehiclePhotoGateway) {
-        return new CreateVehiclePhotoUseCaseImp(vehiclePhotoGateway);
+    @Bean public CreateVehiclePhotoUseCase createVehiclePhotoUseCase(VehiclePhotoGateway vehiclePhotoGateway, VehicleGateway vehicleGateway) {
+        return new CreateVehiclePhotoUseCaseImp(vehiclePhotoGateway, vehicleGateway);
     }
 
     @Bean public ListAllVehiclePhotosUseCase listAllVehiclePhotosUseCase(VehiclePhotoGateway vehiclePhotoGateway) {
@@ -85,7 +85,7 @@ public class BeanConfiguration {
     }
 
 
-    @Bean public CreateUserUseCase createUserUseCase(UserGateway userGateway) {
-        return new CreateUserUseCaseImp(userGateway);
+    @Bean public CreateUserUseCase createUserUseCase(UserGateway userGateway, PasswordHashGateway passwordHashGateway, SendVerificationEmailUseCase emailGateway) {
+        return new CreateUserUseCaseImp(userGateway, passwordHashGateway, emailGateway);
     }
 }

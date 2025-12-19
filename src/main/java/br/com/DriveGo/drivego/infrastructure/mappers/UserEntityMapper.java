@@ -22,6 +22,8 @@ public class UserEntityMapper {
         entity.setRole(user.getRole());
         entity.setStatus(user.getStatus());
         entity.setPhone(user.getPhone());
+        entity.setVerificationCode(user.getVerificationCode());
+        entity.setVerificationExpiresAt(user.getVerificationExpiresAt());
         entity.setLastLoginAt(user.getLastLoginAt());
         entity.setCreatedAt(user.getCreatedAt());
         entity.setUpdatedAt(user.getUpdatedAt());
@@ -40,6 +42,8 @@ public class UserEntityMapper {
                 entity.getRole(),
                 entity.getStatus(),
                 entity.getPhone(),
+                entity.getVerificationCode(),
+                entity.getVerificationExpiresAt(),
                 entity.getLastLoginAt(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt(),
