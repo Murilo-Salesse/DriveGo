@@ -1,6 +1,7 @@
 package br.com.DriveGo.drivego.infrastructure.security;
 
 import br.com.DriveGo.drivego.core.enums.Roles;
+import br.com.DriveGo.drivego.core.gateways.JwtTokenGateway; // ← Importar
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -13,7 +14,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Component
-public class JwtTokenService {
+public class JwtTokenService implements JwtTokenGateway {
 
     @Value("${jwt.secret}")
     private String secret;
@@ -25,6 +26,7 @@ public class JwtTokenService {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
+    @Override // ← Implementa o método da interface
     public String generateToken(UUID userId, String email, Roles role) {
         return Jwts.builder()
                 .setSubject(email)
@@ -36,6 +38,7 @@ public class JwtTokenService {
                 .compact();
     }
 
+    @Override // ← Implementa o método da interface
     public String getEmail(String token) {
         return getClaims(token).getSubject();
     }
@@ -48,6 +51,7 @@ public class JwtTokenService {
                 .getBody();
     }
 
+    @Override // ← Implementa o método da interface
     public boolean isValid(String token) {
         try {
             getClaims(token);

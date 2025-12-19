@@ -6,4 +6,5 @@ public interface UserGateway {
 
     User createUser(User user);
     User findByEmail(String email);
+    User updateUser(User user);
 }

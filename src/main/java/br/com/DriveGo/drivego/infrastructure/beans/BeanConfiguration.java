@@ -3,8 +3,7 @@ package br.com.DriveGo.drivego.infrastructure.beans;
 import br.com.DriveGo.drivego.core.gateways.*;
 import br.com.DriveGo.drivego.core.usecases.categories.*;
 import br.com.DriveGo.drivego.core.usecases.email.SendVerificationEmailUseCase;
-import br.com.DriveGo.drivego.core.usecases.users.CreateUserUseCase;
-import br.com.DriveGo.drivego.core.usecases.users.CreateUserUseCaseImp;
+import br.com.DriveGo.drivego.core.usecases.users.*;
 import br.com.DriveGo.drivego.core.usecases.vehicles.*;
 import br.com.DriveGo.drivego.core.usecases.vehiclesPhotos.*;
 import org.springframework.context.annotation.Bean;
@@ -87,5 +86,13 @@ public class BeanConfiguration {
 
     @Bean public CreateUserUseCase createUserUseCase(UserGateway userGateway, PasswordHashGateway passwordHashGateway, SendVerificationEmailUseCase emailGateway) {
         return new CreateUserUseCaseImp(userGateway, passwordHashGateway, emailGateway);
+    }
+
+    @Bean public LoginUserUseCase loginUserUseCase(UserGateway userGateway, JwtTokenGateway jwtTokenGateway, PasswordHashGateway passwordHashGateway) {
+        return new LoginUserUseCaseImp(userGateway, jwtTokenGateway, passwordHashGateway);
+    }
+
+    @Bean public ValidateTokenUseCase validateTokenUseCase(UserGateway userGateway) {
+        return  new ValidateTokenUseCaseImp(userGateway);
     }
 }

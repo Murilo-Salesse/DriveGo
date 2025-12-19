@@ -60,6 +60,28 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<@NonNull Map<String, Object>> handleInvalideToken(InvalidTokenException ex) {
+        Map<String, Object> response = Map.of(
+                "timestamp", LocalDateTime.now().toString(),
+                "status", 401,
+                "error", "Endpoint Not Found",
+                "message", "Código de verificação inválido"
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<@NonNull Map<String, Object>> handleInvalideCredentials(InvalidCredentialsException ex) {
+        Map<String, Object> response = Map.of(
+                "timestamp", LocalDateTime.now().toString(),
+                "status", 401,
+                "error", "Endpoint Not Found",
+                "message", "Credenciais inválidas."
+        );
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<@NonNull Map<String, Object>> handleInternalError(Exception ex) {
         Map<String, Object> response = Map.of(

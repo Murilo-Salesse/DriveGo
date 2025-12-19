@@ -1,6 +1,7 @@
 package br.com.DriveGo.drivego.core.usecases.users;
 
 import br.com.DriveGo.drivego.core.entities.User;
+import br.com.DriveGo.drivego.core.enums.Roles;
 import br.com.DriveGo.drivego.core.enums.UserStatus;
 import br.com.DriveGo.drivego.core.gateways.PasswordHashGateway;
 import br.com.DriveGo.drivego.core.gateways.UserGateway;
@@ -19,7 +20,7 @@ public class CreateUserUseCaseImp implements CreateUserUseCase{
     public CreateUserUseCaseImp(
             UserGateway userGateway,
             PasswordHashGateway passwordHashGateway,
-            SendVerificationEmailUseCase sendVerificationEmailUseCase  // ✅ Injetar
+            SendVerificationEmailUseCase sendVerificationEmailUseCase
     ) {
         this.userGateway = userGateway;
         this.passwordHashGateway = passwordHashGateway;
@@ -34,6 +35,10 @@ public class CreateUserUseCaseImp implements CreateUserUseCase{
 
         user.setPasswordHash(passwordHashGateway.hash(user.getPasswordHash()));
         user.setStatus(UserStatus.PENDING);
+
+        if (user.getRole() == null) {
+            user.setRole(Roles.CLIENT);
+        }
 
         String code = String.valueOf((int)(Math.random() * 900000) + 100000);
         user.setVerificationCode(code);
