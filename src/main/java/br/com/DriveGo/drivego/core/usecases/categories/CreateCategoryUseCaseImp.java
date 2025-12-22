@@ -1,7 +1,7 @@
 package br.com.DriveGo.drivego.core.usecases.categories;
 import br.com.DriveGo.drivego.core.entities.Category;
 import br.com.DriveGo.drivego.core.gateways.CategoryGateway;
-import br.com.DriveGo.drivego.infrastructure.exceptions.DuplicateException;
+import br.com.DriveGo.drivego.core.exceptions.DuplicateException;
 
 public class CreateCategoryUseCaseImp implements CreateCategoryUseCase {
 

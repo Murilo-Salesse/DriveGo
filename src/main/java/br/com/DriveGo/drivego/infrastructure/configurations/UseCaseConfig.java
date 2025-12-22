@@ -2,6 +2,7 @@ package br.com.DriveGo.drivego.infrastructure.configurations;
 
 import br.com.DriveGo.drivego.core.gateways.EmailGateway;
 import br.com.DriveGo.drivego.core.usecases.email.SendVerificationEmailUseCase;
+import br.com.DriveGo.drivego.core.usecases.email.SendVerifiyLoginEmailUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,5 +14,12 @@ public class UseCaseConfig {
             EmailGateway emailGateway
     ) {
         return new SendVerificationEmailUseCase(emailGateway);
+    }
+
+    @Bean
+    SendVerifiyLoginEmailUseCase sendVerifiyLoginEmailUseCase(
+            EmailGateway emailGateway
+    ) {
+        return  new SendVerifiyLoginEmailUseCase(emailGateway);
     }
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -25,39 +26,43 @@ public class ReservationEntity {
     @Column(columnDefinition = "uuid")
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @ManyToOne
-    @JoinColumn(name = "vehicle_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicle_id", nullable = false)
     private VehicleEntity vehicle;
 
-    @NotNull
-    private LocalDateTime start_datetime;
+    @Column(name = "start_datetime")
+    private LocalDateTime startDateTime;
 
-    @NotNull
-    private LocalDateTime end_datetime;
+    @Column(name = "end_datetime")
+    private LocalDateTime endDateTime;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "reservation_status")
-    private ReservationStatus reservation_status = ReservationStatus.PENDING;
+    @Column(name = "status")
+    private ReservationStatus status = ReservationStatus.PENDING;
 
     @NotNull
-    private Double total_amount;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal totalAmount;
 
     @NotNull
-    private Double deposit_amount;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal depositAmount;
 
     @CreationTimestamp
-    private LocalDateTime created_at;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updated_at;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "reservation")
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DamageEntity> damages;
 
-    @OneToMany(mappedBy = "reservation")
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PaymentEntity> payments;
 }

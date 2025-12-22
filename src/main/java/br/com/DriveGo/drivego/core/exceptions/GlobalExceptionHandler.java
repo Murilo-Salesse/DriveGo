@@ -1,4 +1,4 @@
-package br.com.DriveGo.drivego.infrastructure.exceptions;
+package br.com.DriveGo.drivego.core.exceptions;
 
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;
@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
                 "error", "Endpoint Not Found",
                 "message", "Código de verificação inválido"
         );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
@@ -112,5 +112,27 @@ public class GlobalExceptionHandler {
         response.put("fields", fieldErrors);
 
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<Map<String, Object>> handleBusinessException(BusinessException ex) {
+        Map<String, Object> response = Map.of(
+                "timestamp", LocalDateTime.now().toString(),
+                "status", 422,
+                "error", "Unprocessable Entity",
+                "message", ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(response);
+    }
+
+    @ExceptionHandler(PaymentProviderException.class)
+    public ResponseEntity<Map<String, Object>> handlePaymentProviderException(PaymentProviderException ex) {
+        Map<String, Object> response = Map.of(
+                "timestamp", LocalDateTime.now().toString(),
+                "status", 403,
+                "error", "Forbidden",
+                "message", ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 }

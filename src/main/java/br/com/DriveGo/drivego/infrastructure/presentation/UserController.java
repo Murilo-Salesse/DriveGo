@@ -3,14 +3,16 @@ package br.com.DriveGo.drivego.infrastructure.presentation;
 import br.com.DriveGo.drivego.core.entities.User;
 import br.com.DriveGo.drivego.core.usecases.users.CreateUserUseCase;
 import br.com.DriveGo.drivego.core.usecases.users.LoginUserUseCase;
+import br.com.DriveGo.drivego.core.usecases.users.ValidateTokenLoginUseCase;
 import br.com.DriveGo.drivego.core.usecases.users.ValidateTokenUseCase;
+import br.com.DriveGo.drivego.core.usecases.users.dtos.LoginResult;
+import br.com.DriveGo.drivego.core.usecases.users.dtos.VerificationLoginResult;
+import br.com.DriveGo.drivego.core.usecases.users.dtos.VerificationResult;
+import br.com.DriveGo.drivego.infrastructure.dtos.requests.VerifyTokenLoginRequest;
 import br.com.DriveGo.drivego.infrastructure.dtos.requests.LoginRequest;
 import br.com.DriveGo.drivego.infrastructure.dtos.requests.UserRegisterRequest;
 import br.com.DriveGo.drivego.infrastructure.dtos.requests.VerifyTokenRequest;
-import br.com.DriveGo.drivego.infrastructure.dtos.responses.LoginResponse;
-import br.com.DriveGo.drivego.infrastructure.dtos.responses.VerificationResponse;
 import br.com.DriveGo.drivego.infrastructure.mappers.UserMapper;
-import br.com.DriveGo.drivego.infrastructure.security.JwtTokenService;
 import jakarta.validation.Valid;
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;
@@ -29,11 +31,16 @@ public class UserController {
     private final CreateUserUseCase createUserUseCase;
     private final LoginUserUseCase loginUserUseCase;
     private final ValidateTokenUseCase validateTokenUseCase;
+    private final ValidateTokenLoginUseCase validateTokenLoginUseCase;
 
-    public UserController(CreateUserUseCase createUserUseCase, JwtTokenService jwtTokenService, LoginUserUseCase loginUserUseCase, ValidateTokenUseCase validateTokenUseCase) {
+    public UserController(CreateUserUseCase createUserUseCase,
+                          LoginUserUseCase loginUserUseCase,
+                          ValidateTokenUseCase validateTokenUseCase,
+                          ValidateTokenLoginUseCase validateTokenLoginUseCase) {
         this.createUserUseCase = createUserUseCase;
         this.loginUserUseCase = loginUserUseCase;
         this.validateTokenUseCase = validateTokenUseCase;
+        this.validateTokenLoginUseCase = validateTokenLoginUseCase;
     }
 
     @PostMapping("/register")
@@ -43,8 +50,8 @@ public class UserController {
                 UserMapper.toDomain(request));
 
         Map<String, Object> data = Map.of(
-                "message", "Usuário criado com sucesso.",
-                "user", UserMapper.toResponse(savedUser)
+                "message", "Cadastro realizado. Verifique seu email para ativar a conta.",
+                "user", UserMapper.toSimpleResponse(savedUser)
         );
         Map<String, Object> response = Map.of("data", data);
 
@@ -55,14 +62,14 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> verifyToken(
             @Valid @RequestBody VerifyTokenRequest request) {
 
-        VerificationResponse response = validateTokenUseCase.execute(
+        VerificationResult response = validateTokenUseCase.execute(
                 request.getEmail(),
                 request.getCode()
         );
 
         Map<String, Object> data = Map.of(
                 "message", "Email verificado com sucesso",
-                "user", UserMapper.toResponse(response.getUser())
+                "user", UserMapper.toSimpleResponse(response.getUser())
         );
 
         return ResponseEntity.ok(Map.of("data", data));
@@ -72,15 +79,32 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> login(
             @Valid @RequestBody LoginRequest request) {
 
-        LoginResponse response = loginUserUseCase.execute(
+        LoginResult result = loginUserUseCase.execute(
                 request.getEmail(),
                 request.getPassword()
         );
 
         Map<String, Object> data = Map.of(
-                "message", "Login realizado com sucesso",
-                "token", response.getToken(),
-                "user", UserMapper.toResponse(response.getUser())
+                "message", "Código de verificação enviado para seu email",
+                "user", UserMapper.toSimpleResponse(result.getUser())
+        );
+
+        return ResponseEntity.ok(Map.of("data", data));
+    }
+
+    @PostMapping("/verifyLogin")
+    public ResponseEntity<Map<String, Object>> verifyLoginToken(
+            @Valid @RequestBody VerifyTokenLoginRequest request) {
+
+        VerificationLoginResult response = validateTokenLoginUseCase.execute(
+                request.getEmail(),
+                request.getCode()
+        );
+
+        Map<String, Object> data = Map.of(
+                "message", "Token verificado com sucesso",
+                "user", UserMapper.toResponse(response.getUser()),
+                "token", response.getToken()
         );
 
         return ResponseEntity.ok(Map.of("data", data));

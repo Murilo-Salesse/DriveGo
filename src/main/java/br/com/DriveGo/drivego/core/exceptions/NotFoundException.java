@@ -1,4 +1,4 @@
-package br.com.DriveGo.drivego.infrastructure.exceptions;
+package br.com.DriveGo.drivego.core.exceptions;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

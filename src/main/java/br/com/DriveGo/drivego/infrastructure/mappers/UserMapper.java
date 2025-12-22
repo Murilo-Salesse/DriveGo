@@ -2,7 +2,8 @@ package br.com.DriveGo.drivego.infrastructure.mappers;
 
 import br.com.DriveGo.drivego.core.entities.User;
 import br.com.DriveGo.drivego.infrastructure.dtos.requests.UserRegisterRequest;
-import br.com.DriveGo.drivego.infrastructure.dtos.responses.UserRegisterResponse;
+import br.com.DriveGo.drivego.infrastructure.dtos.responses.UserSimpleResponse;
+import br.com.DriveGo.drivego.infrastructure.dtos.responses.UserResponse;
 import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
@@ -16,24 +17,24 @@ public class UserMapper {
         return new User(
                 null,
                 request.getEmail(),
-                request.getPassword(), // senha crua
+                request.getPassword(),
                 null,
                 request.getFullName(),
-                null,   // role será definida no use case
-                null,   // status será definido no use case
+                null,
+                null,
                 request.getPhone(),
-                null,   // verificationCode
-                null,   // verificationExpiresAt
-                null,   // lastLoginAt
-                null,   // createdAt
-                null,   // updatedAt
+                null,
+                null,
+                null,
+                null,
+                null,
                 new ArrayList<>()
         );
     }
 
-    // Converte de UserModel (entidade do banco) para userRequest (saida)
-    public static UserRegisterResponse toResponse(User u) {
-        return new UserRegisterResponse(
+    // ✔ Genérico para respostas
+    public static UserResponse toResponse(User u) {
+        return new UserResponse(
                 u.getId(),
                 u.getEmail(),
                 u.getFullName(),
@@ -41,7 +42,13 @@ public class UserMapper {
         );
     }
 
-    public static List<UserRegisterResponse> toResponseList(List<User> users) {
+    public static UserSimpleResponse toSimpleResponse(User u) {
+        return new UserSimpleResponse(
+                u.getEmail()
+        );
+    }
+
+    public static List<UserResponse> toResponseList(List<User> users) {
         return users.stream()
                 .map(UserMapper::toResponse)
                 .toList();

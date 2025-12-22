@@ -1,35 +1,47 @@
 package br.com.DriveGo.drivego.core.entities;
 
 import br.com.DriveGo.drivego.core.enums.ReservationStatus;
+import br.com.DriveGo.drivego.core.exceptions.BusinessException;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Reservation {
 
-    private UUID id;
-    private UUID user_id;
-    private UUID vehicle_id;
-    private LocalDateTime start_datetime;
-    private LocalDateTime end_datetime;
-    private ReservationStatus status;
-    private Double total_amount;
-    private Double deposit_amount;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private static final BigDecimal DEPOSIT_PERCENTAGE = new BigDecimal("0.50");
+    private static final int MINIMUM_DAYS = 1;
+    private static final int SCALE = 2; // 2 casas decimais para valores monetários
 
-    public Reservation(UUID id, UUID user_id, UUID vehicle_id, LocalDateTime start_datetime, LocalDateTime end_datetime, ReservationStatus status, Double total_amount, Double deposit_amount, LocalDateTime created_at, LocalDateTime updated_at) {
+    private UUID id;
+    private UUID userId;
+    private UUID vehicleId;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
+    private ReservationStatus status;
+    private BigDecimal totalAmount;
+    private BigDecimal depositAmount;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    public Reservation(UUID id, UUID userId, UUID vehicleId, LocalDateTime startDateTime, LocalDateTime endDateTime, ReservationStatus status, BigDecimal totalAmount, BigDecimal depositAmount, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.user_id = user_id;
-        this.vehicle_id = vehicle_id;
-        this.start_datetime = start_datetime;
-        this.end_datetime = end_datetime;
+        this.userId = userId;
+        this.vehicleId = vehicleId;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
         this.status = status;
-        this.total_amount = total_amount;
-        this.deposit_amount = deposit_amount;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.totalAmount = totalAmount;
+        this.depositAmount = depositAmount;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Reservation() {
+
     }
 
     public UUID getId() {
@@ -40,36 +52,36 @@ public class Reservation {
         this.id = id;
     }
 
-    public UUID getUser_id() {
-        return user_id;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setUser_id(UUID user_id) {
-        this.user_id = user_id;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
-    public UUID getVehicle_id() {
-        return vehicle_id;
+    public UUID getVehicleId() {
+        return vehicleId;
     }
 
-    public void setVehicle_id(UUID vehicle_id) {
-        this.vehicle_id = vehicle_id;
+    public void setVehicleId(UUID vehicleId) {
+        this.vehicleId = vehicleId;
     }
 
-    public LocalDateTime getStart_datetime() {
-        return start_datetime;
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
     }
 
-    public void setStart_datetime(LocalDateTime start_datetime) {
-        this.start_datetime = start_datetime;
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
     }
 
-    public LocalDateTime getEnd_datetime() {
-        return end_datetime;
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
     }
 
-    public void setEnd_datetime(LocalDateTime end_datetime) {
-        this.end_datetime = end_datetime;
+    public void setEndDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
     }
 
     public ReservationStatus getStatus() {
@@ -80,63 +92,108 @@ public class Reservation {
         this.status = status;
     }
 
-    public Double getTotal_amount() {
-        return total_amount;
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
     }
 
-    public void setTotal_amount(Double total_amount) {
-        this.total_amount = total_amount;
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
-    public Double getDeposit_amount() {
-        return deposit_amount;
+    public BigDecimal getDepositAmount() {
+        return depositAmount;
     }
 
-    public void setDeposit_amount(Double deposit_amount) {
-        this.deposit_amount = deposit_amount;
+    public void setDepositAmount(BigDecimal depositAmount) {
+        this.depositAmount = depositAmount;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Reservation that = (Reservation) o;
-        return Objects.equals(id, that.id) && Objects.equals(user_id, that.user_id) && Objects.equals(vehicle_id, that.vehicle_id) && Objects.equals(start_datetime, that.start_datetime) && Objects.equals(end_datetime, that.end_datetime) && status == that.status && Objects.equals(total_amount, that.total_amount) && Objects.equals(deposit_amount, that.deposit_amount) && Objects.equals(created_at, that.created_at) && Objects.equals(updated_at, that.updated_at);
+        return Objects.equals(id, that.id) && Objects.equals(userId, that.userId) && Objects.equals(vehicleId, that.vehicleId) && Objects.equals(startDateTime, that.startDateTime) && Objects.equals(endDateTime, that.endDateTime) && status == that.status && Objects.equals(totalAmount, that.totalAmount) && Objects.equals(depositAmount, that.depositAmount) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user_id, vehicle_id, start_datetime, end_datetime, status, total_amount, deposit_amount, created_at, updated_at);
+        return Objects.hash(id, userId, vehicleId, startDateTime, endDateTime, status, totalAmount, depositAmount, createdAt, updatedAt);
     }
 
     @Override
     public String toString() {
         return "Reservation{" +
                 "id=" + id +
-                ", user_id=" + user_id +
-                ", vehicle_id=" + vehicle_id +
-                ", start_datetime=" + start_datetime +
-                ", end_datetime=" + end_datetime +
+                ", userId=" + userId +
+                ", vehicleId=" + vehicleId +
+                ", startDateTime=" + startDateTime +
+                ", endDateTime=" + endDateTime +
                 ", status=" + status +
-                ", total_amount=" + total_amount +
-                ", deposit_amount=" + deposit_amount +
-                ", created_at=" + created_at +
-                ", updated_at=" + updated_at +
+                ", totalAmount=" + totalAmount +
+                ", depositAmount=" + depositAmount +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    /**
+     * Calcula o total da reserva baseado na diária do veículo e duração da reserva
+     *
+     * @param dailyRate
+     */
+    public void calculateTotalAmount(BigDecimal dailyRate) {
+        validateDates();
+
+        long days = ChronoUnit.DAYS.between(startDateTime, endDateTime);
+        if (days < MINIMUM_DAYS) {
+            days = MINIMUM_DAYS; // garante no mínimo 1 dia
+        }
+
+        // Multiplica diária pelos dias e arredonda para 2 casas decimais
+
+        this.totalAmount = dailyRate.multiply(BigDecimal.valueOf(days))
+                .setScale(SCALE, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * Calcula o valor do depósito com base no total da reserva
+     *
+     */
+    public void calculateDeposit() {
+        if (totalAmount == null) {
+            throw new IllegalStateException("Total da reserva não calculado");
+        }
+
+        this.depositAmount = totalAmount.multiply(DEPOSIT_PERCENTAGE)
+                .setScale(SCALE, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * Valida datas da reserva
+     */
+    private void validateDates() {
+        if (startDateTime == null || endDateTime == null) {
+            throw new BusinessException("Datas da reserva não podem ser nulas");
+        }
+
+        if (!startDateTime.isBefore(endDateTime)) {
+            throw new BusinessException("Data inicial deve ser antes da data final");
+        }
     }
 }

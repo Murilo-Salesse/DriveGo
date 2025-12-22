@@ -2,7 +2,7 @@ package br.com.DriveGo.drivego.core.usecases.categories;
 
 import br.com.DriveGo.drivego.core.entities.Category;
 import br.com.DriveGo.drivego.core.gateways.CategoryGateway;
-import br.com.DriveGo.drivego.infrastructure.exceptions.NotFoundException;
+import br.com.DriveGo.drivego.core.exceptions.NotFoundException;
 
 import java.util.UUID;
 

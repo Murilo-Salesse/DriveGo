@@ -1,7 +1,7 @@
 package br.com.DriveGo.drivego.core.usecases.vehiclesPhotos;
 
 import br.com.DriveGo.drivego.core.gateways.VehiclePhotoGateway;
-import br.com.DriveGo.drivego.infrastructure.exceptions.NotFoundException;
+import br.com.DriveGo.drivego.core.exceptions.NotFoundException;
 
 import java.util.UUID;
 

@@ -3,9 +3,10 @@ package br.com.DriveGo.drivego.core.usecases.users;
 import br.com.DriveGo.drivego.core.entities.User;
 import br.com.DriveGo.drivego.core.enums.UserStatus;
 import br.com.DriveGo.drivego.core.gateways.UserGateway;
-import br.com.DriveGo.drivego.infrastructure.dtos.responses.VerificationResponse;
-import br.com.DriveGo.drivego.infrastructure.exceptions.InvalidTokenException;
-import br.com.DriveGo.drivego.infrastructure.exceptions.NotFoundException;
+
+import br.com.DriveGo.drivego.core.usecases.users.dtos.VerificationResult;
+import br.com.DriveGo.drivego.core.exceptions.InvalidTokenException;
+import br.com.DriveGo.drivego.core.exceptions.NotFoundException;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +21,7 @@ public class ValidateTokenUseCaseImp implements ValidateTokenUseCase {
     }
 
     @Override
-    public VerificationResponse execute(String email, String verificationCode) {
+    public VerificationResult execute(String email, String verificationCode) {
         User user = userGateway.findByEmail(email);
 
         validateUserExists(user, email);
@@ -34,7 +35,7 @@ public class ValidateTokenUseCaseImp implements ValidateTokenUseCase {
 
         User activatedUser = userGateway.updateUser(user);
 
-        return new VerificationResponse(activatedUser);
+        return new VerificationResult(activatedUser);
     }
 
     private void validateUserExists(User user, String email) {

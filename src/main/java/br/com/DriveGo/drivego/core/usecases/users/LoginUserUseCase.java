@@ -1,8 +1,6 @@
 package br.com.DriveGo.drivego.core.usecases.users;
-
-import br.com.DriveGo.drivego.infrastructure.dtos.responses.LoginResponse;
+import br.com.DriveGo.drivego.core.usecases.users.dtos.LoginResult;
 
 public interface LoginUserUseCase {
-
-    LoginResponse execute(String email, String password);
+    LoginResult execute(String email, String password);
 }

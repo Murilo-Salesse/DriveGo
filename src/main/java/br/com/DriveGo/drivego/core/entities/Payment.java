@@ -1,5 +1,7 @@
 package br.com.DriveGo.drivego.core.entities;
 import br.com.DriveGo.drivego.core.enums.PaymentStatus;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -7,21 +9,25 @@ import java.util.UUID;
 public class Payment {
 
     private UUID id;
-    private UUID reservation_id;
-    private Double amount;
-    private String method;
-    private PaymentStatus status;
-    private String provider_reference;
-    private LocalDateTime created_at;
+    private UUID reservationId;
+    private BigDecimal amount;
 
-    public Payment(UUID id, UUID reservation_id, Double amount, String method, PaymentStatus status, String provider_reference, LocalDateTime created_at) {
+    private String method;   // CARD, PIX
+    private String provider; // STRIPE
+
+    private PaymentStatus status;
+    private String providerReference;
+    private LocalDateTime createdAt;
+
+    public Payment(UUID id, UUID reservationId, BigDecimal amount, String method, String provider, PaymentStatus status, String providerReference, LocalDateTime createdAt) {
         this.id = id;
-        this.reservation_id = reservation_id;
+        this.reservationId = reservationId;
         this.amount = amount;
         this.method = method;
+        this.provider = provider;
         this.status = status;
-        this.provider_reference = provider_reference;
-        this.created_at = created_at;
+        this.providerReference = providerReference;
+        this.createdAt = createdAt;
     }
 
     public UUID getId() {
@@ -32,19 +38,19 @@ public class Payment {
         this.id = id;
     }
 
-    public UUID getReservation_id() {
-        return reservation_id;
+    public UUID getReservationId() {
+        return reservationId;
     }
 
-    public void setReservation_id(UUID reservation_id) {
-        this.reservation_id = reservation_id;
+    public void setReservationId(UUID reservationId) {
+        this.reservationId = reservationId;
     }
 
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -56,6 +62,14 @@ public class Payment {
         this.method = method;
     }
 
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
     public PaymentStatus getStatus() {
         return status;
     }
@@ -64,44 +78,45 @@ public class Payment {
         this.status = status;
     }
 
-    public String getProvider_reference() {
-        return provider_reference;
+    public String getProviderReference() {
+        return providerReference;
     }
 
-    public void setProvider_reference(String provider_reference) {
-        this.provider_reference = provider_reference;
+    public void setProviderReference(String providerReference) {
+        this.providerReference = providerReference;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Payment payment = (Payment) o;
-        return Objects.equals(id, payment.id) && Objects.equals(reservation_id, payment.reservation_id) && Objects.equals(amount, payment.amount) && Objects.equals(method, payment.method) && status == payment.status && Objects.equals(provider_reference, payment.provider_reference) && Objects.equals(created_at, payment.created_at);
+        return Objects.equals(id, payment.id) && Objects.equals(reservationId, payment.reservationId) && Objects.equals(amount, payment.amount) && Objects.equals(method, payment.method) && Objects.equals(provider, payment.provider) && status == payment.status && Objects.equals(providerReference, payment.providerReference) && Objects.equals(createdAt, payment.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, reservation_id, amount, method, status, provider_reference, created_at);
+        return Objects.hash(id, reservationId, amount, method, provider, status, providerReference, createdAt);
     }
 
     @Override
     public String toString() {
         return "Payment{" +
                 "id=" + id +
-                ", reservation_id=" + reservation_id +
+                ", reservationId=" + reservationId +
                 ", amount=" + amount +
                 ", method='" + method + '\'' +
+                ", provider='" + provider + '\'' +
                 ", status=" + status +
-                ", provider_reference='" + provider_reference + '\'' +
-                ", created_at=" + created_at +
+                ", providerReference='" + providerReference + '\'' +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }

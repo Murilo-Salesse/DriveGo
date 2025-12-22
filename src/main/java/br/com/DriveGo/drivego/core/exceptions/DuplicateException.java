@@ -1,4 +1,4 @@
-package br.com.DriveGo.drivego.infrastructure.exceptions;
+package br.com.DriveGo.drivego.core.exceptions;
 
 public class DuplicateException extends RuntimeException {
     public DuplicateException(String message) {

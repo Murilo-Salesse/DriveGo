@@ -48,6 +48,10 @@ jwt:
   secret: ${JWT_SECRET}
   expiration: 3600000
 
+stripe:
+  api:
+    key: ${STRIPE_KEY}
+
 app:
   admin:
     email: admin@drivego.com

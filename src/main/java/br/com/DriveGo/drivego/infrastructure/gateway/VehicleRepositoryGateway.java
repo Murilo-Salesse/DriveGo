@@ -2,7 +2,7 @@ package br.com.DriveGo.drivego.infrastructure.gateway;
 
 import br.com.DriveGo.drivego.core.entities.Vehicle;
 import br.com.DriveGo.drivego.core.gateways.VehicleGateway;
-import br.com.DriveGo.drivego.infrastructure.exceptions.NotFoundException;
+import br.com.DriveGo.drivego.core.exceptions.NotFoundException;
 import br.com.DriveGo.drivego.infrastructure.mappers.VehicleEntityMapper;
 import br.com.DriveGo.drivego.infrastructure.persistence.CategoryEntity;
 import br.com.DriveGo.drivego.infrastructure.persistence.CategoryRepository;

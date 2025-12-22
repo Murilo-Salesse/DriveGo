@@ -5,40 +5,44 @@ import br.com.DriveGo.drivego.core.enums.UserStatus;
 import br.com.DriveGo.drivego.core.gateways.JwtTokenGateway;
 import br.com.DriveGo.drivego.core.gateways.PasswordHashGateway;
 import br.com.DriveGo.drivego.core.gateways.UserGateway;
-import br.com.DriveGo.drivego.infrastructure.dtos.responses.LoginResponse;
-import br.com.DriveGo.drivego.infrastructure.exceptions.InvalidCredentialsException;
+import br.com.DriveGo.drivego.core.usecases.email.SendVerifiyLoginEmailUseCase;
+
+import br.com.DriveGo.drivego.core.usecases.users.dtos.LoginResult;
+import br.com.DriveGo.drivego.core.exceptions.InvalidCredentialsException;
+
+import java.time.LocalDateTime;
 
 public class LoginUserUseCaseImp implements LoginUserUseCase {
 
     private final UserGateway userGateway;
-    private final JwtTokenGateway jwtTokenGateway;
     private final PasswordHashGateway passwordHashGateway;
+    private final SendVerifiyLoginEmailUseCase sendVerifiyLoginEmailUseCase;
 
     public LoginUserUseCaseImp(
             UserGateway userGateway,
-            JwtTokenGateway jwtTokenGateway,
-            PasswordHashGateway passwordHashGateway
+            PasswordHashGateway passwordHashGateway,
+            SendVerifiyLoginEmailUseCase sendVerifiyLoginEmailUseCase
     ) {
         this.userGateway = userGateway;
-        this.jwtTokenGateway = jwtTokenGateway;
         this.passwordHashGateway = passwordHashGateway;
+        this.sendVerifiyLoginEmailUseCase = sendVerifiyLoginEmailUseCase;
     }
 
-    @Override
-    public LoginResponse execute(String email, String password) {
+    public LoginResult execute(String email, String password) {
         User user = userGateway.findByEmail(email);
 
         validateUserExists(user, email);
         validatePasswordMatches(user, password);
         validateUserIsActive(user);
 
-        String token = jwtTokenGateway.generateToken(
-                user.getId(),
-                user.getEmail(),
-                user.getRole()
-        );
+        String code = String.valueOf((int)(Math.random() * 900000) + 100000);
+        user.setVerificationCode(code);
+        user.setVerificationExpiresAt(LocalDateTime.now().plusMinutes(5));
 
-        return new LoginResponse(token, user);
+        userGateway.updateUser(user);
+        sendVerifiyLoginEmailUseCase.execute(user.getEmail(), code);
+
+        return new LoginResult(user);
     }
 
     private void validateUserExists(User user, String email) {

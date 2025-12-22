@@ -2,8 +2,8 @@ package br.com.DriveGo.drivego.core.usecases.vehicles;
 
 import br.com.DriveGo.drivego.core.entities.Vehicle;
 import br.com.DriveGo.drivego.core.gateways.VehicleGateway;
-import br.com.DriveGo.drivego.infrastructure.exceptions.DuplicateException;
-import br.com.DriveGo.drivego.infrastructure.exceptions.NotFoundException;
+import br.com.DriveGo.drivego.core.exceptions.DuplicateException;
+import br.com.DriveGo.drivego.core.exceptions.NotFoundException;
 
 import java.util.UUID;
 

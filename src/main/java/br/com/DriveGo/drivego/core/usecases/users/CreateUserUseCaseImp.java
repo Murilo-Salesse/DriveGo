@@ -6,7 +6,7 @@ import br.com.DriveGo.drivego.core.enums.UserStatus;
 import br.com.DriveGo.drivego.core.gateways.PasswordHashGateway;
 import br.com.DriveGo.drivego.core.gateways.UserGateway;
 import br.com.DriveGo.drivego.core.usecases.email.SendVerificationEmailUseCase;
-import br.com.DriveGo.drivego.infrastructure.exceptions.DuplicateException;
+import br.com.DriveGo.drivego.core.exceptions.DuplicateException;
 
 import java.time.LocalDateTime;
 

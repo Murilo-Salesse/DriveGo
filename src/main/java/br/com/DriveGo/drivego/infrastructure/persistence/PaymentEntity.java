@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -24,23 +25,31 @@ public class PaymentEntity {
     @Column(columnDefinition = "uuid")
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "reservation_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservation_id", nullable = false)
     private ReservationEntity reservation;
 
     @NotNull
-    private Double amount;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal amount;
 
     @NotBlank
+    @Column(length = 50)
     private String method;
 
+    @NotBlank
+    @Column(length = 30)
+    private String provider;
+
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "payment_status")
+    @Column(name = "status")
     private PaymentStatus status = PaymentStatus.PENDING;
 
     @NotBlank
-    private String provider_reference;
+    @Column(name = "provider_reference", length = 255)
+    private String providerReference;
 
     @CreationTimestamp
-    private LocalDateTime created_at;
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 }

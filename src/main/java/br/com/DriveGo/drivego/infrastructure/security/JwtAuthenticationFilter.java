@@ -1,5 +1,7 @@
 package br.com.DriveGo.drivego.infrastructure.security;
 
+import br.com.DriveGo.drivego.core.enums.Roles;
+import br.com.DriveGo.drivego.infrastructure.configurations.UserPrincipal;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.UUID;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -44,13 +46,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String email = jwtTokenService.getEmail(token);
+        // 🔽 LÊ TODOS OS DADOS DO TOKEN
+        var claims = jwtTokenService.getClaims(token);
+
+        UUID userId = UUID.fromString(claims.get("userId", String.class));
+        String email = claims.getSubject();
+
+        Roles role = Roles.valueOf(
+                claims.get("role", String.class)
+        );
+
+        // 🔽 CRIA O PRINCIPAL CORRETO
+        UserPrincipal principal =
+                new UserPrincipal(userId, email, role);
 
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
-                        email,
+                        principal,
                         null,
-                        Collections.emptyList()
+                        principal.getAuthorities()
                 );
 
         authentication.setDetails(
