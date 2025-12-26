@@ -38,5 +38,30 @@ public class PaymentRepositoryGateway implements PaymentGateway {
 
         return PaymentEntityMapper.toDomain(saved);
     }
+
+    @Override
+    public Payment findByProviderReference(String providerReference) {
+        PaymentEntity entity =
+                paymentRepository.findByProviderReference(providerReference)
+                        .orElseThrow(() ->
+                                new NotFoundException("Pagamento não encontrado")
+                        );
+
+        return PaymentEntityMapper.toDomain(entity);
+    }
+
+    @Override
+    public Payment update(Payment payment) {
+        PaymentEntity entity =
+                paymentRepository.findById(payment.getId())
+                        .orElseThrow(() ->
+                                new NotFoundException("Pagamento não encontrado")
+                        );
+
+        entity.setStatus(payment.getStatus());
+
+        PaymentEntity saved = paymentRepository.save(entity);
+        return PaymentEntityMapper.toDomain(saved);
+    }
 }
 

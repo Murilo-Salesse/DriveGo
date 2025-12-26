@@ -45,7 +45,7 @@ spring:
           writetimeout: 5000
 
 jwt:
-  secret: ${JWT_SECRET}
+  secret: ${JWT_SECRET:drivego-dev-secret-key-minimum-256-bits-for-hs256}
   expiration: 3600000
 
 stripe:

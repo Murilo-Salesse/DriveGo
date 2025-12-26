@@ -1,6 +1,7 @@
 package br.com.DriveGo.drivego.infrastructure.gateway;
 
 import br.com.DriveGo.drivego.core.entities.Reservation;
+import br.com.DriveGo.drivego.core.enums.ReservationStatus;
 import br.com.DriveGo.drivego.core.exceptions.NotFoundException;
 import br.com.DriveGo.drivego.core.gateways.ReservationGateway;
 import br.com.DriveGo.drivego.infrastructure.mappers.ReservationEntityMapper;
@@ -87,5 +88,29 @@ public class ReservationRepositoryGateway implements ReservationGateway {
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrada."));
 
         return reservationRepository.sumTotalSpentByUser(id);
+    }
+
+    @Override
+    public void confirmReservation(UUID reservationId) {
+        ReservationEntity entity =
+                reservationRepository.findById(reservationId)
+                        .orElseThrow(() ->
+                                new NotFoundException("Reserva não encontrada")
+                        );
+
+        entity.setStatus(ReservationStatus.CONFIRMED);
+        reservationRepository.save(entity);
+    }
+
+    @Override
+    public void cancelReservation(UUID reservationId) {
+        ReservationEntity entity =
+                reservationRepository.findById(reservationId)
+                        .orElseThrow(() ->
+                                new NotFoundException("Reserva não encontrada")
+                        );
+
+        entity.setStatus(ReservationStatus.CANCELLED);
+        reservationRepository.save(entity);
     }
 }

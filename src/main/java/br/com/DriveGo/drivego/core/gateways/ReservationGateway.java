@@ -14,4 +14,6 @@ public interface ReservationGateway {
     List<Reservation> listAll();
     Long totalReservations();
     BigDecimal countTotalReservationCost(UUID id);
+    void confirmReservation(UUID reservationId);
+    void cancelReservation(UUID reservationId);
 }

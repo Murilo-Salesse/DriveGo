@@ -1,28 +1,32 @@
 package br.com.DriveGo.drivego.infrastructure.presentation;
 
-import br.com.DriveGo.drivego.core.entities.User;
-import br.com.DriveGo.drivego.core.usecases.users.CreateUserUseCase;
-import br.com.DriveGo.drivego.core.usecases.users.LoginUserUseCase;
-import br.com.DriveGo.drivego.core.usecases.users.ValidateTokenLoginUseCase;
-import br.com.DriveGo.drivego.core.usecases.users.ValidateTokenUseCase;
-import br.com.DriveGo.drivego.core.usecases.users.dtos.LoginResult;
-import br.com.DriveGo.drivego.core.usecases.users.dtos.VerificationLoginResult;
-import br.com.DriveGo.drivego.core.usecases.users.dtos.VerificationResult;
-import br.com.DriveGo.drivego.infrastructure.dtos.requests.VerifyTokenLoginRequest;
-import br.com.DriveGo.drivego.infrastructure.dtos.requests.LoginRequest;
-import br.com.DriveGo.drivego.infrastructure.dtos.requests.UserRegisterRequest;
-import br.com.DriveGo.drivego.infrastructure.dtos.requests.VerifyTokenRequest;
-import br.com.DriveGo.drivego.infrastructure.mappers.UserMapper;
-import jakarta.validation.Valid;
-import lombok.NonNull;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
+import br.com.DriveGo.drivego.core.entities.User;
+import br.com.DriveGo.drivego.core.usecases.users.CreateUserUseCase;
+import br.com.DriveGo.drivego.core.usecases.users.LoginUserUseCase;
+import br.com.DriveGo.drivego.core.usecases.users.UpdateUserUseCase;
+import br.com.DriveGo.drivego.core.usecases.users.ValidateTokenLoginUseCase;
+import br.com.DriveGo.drivego.core.usecases.users.ValidateTokenUseCase;
+import br.com.DriveGo.drivego.core.usecases.users.dtos.LoginResult;
+import br.com.DriveGo.drivego.core.usecases.users.dtos.VerificationLoginResult;
+import br.com.DriveGo.drivego.core.usecases.users.dtos.VerificationResult;
+import br.com.DriveGo.drivego.infrastructure.dtos.requests.LoginRequest;
+import br.com.DriveGo.drivego.infrastructure.dtos.requests.UserRegisterRequest;
+import br.com.DriveGo.drivego.infrastructure.dtos.requests.UserUpdateRequest;
+import br.com.DriveGo.drivego.infrastructure.dtos.requests.VerifyTokenLoginRequest;
+import br.com.DriveGo.drivego.infrastructure.dtos.requests.VerifyTokenRequest;
+import br.com.DriveGo.drivego.infrastructure.mappers.UserMapper;
+import jakarta.validation.Valid;
+import lombok.NonNull;
 
 @RestController
 @RequestMapping("/api/user")
@@ -32,15 +36,18 @@ public class UserController {
     private final LoginUserUseCase loginUserUseCase;
     private final ValidateTokenUseCase validateTokenUseCase;
     private final ValidateTokenLoginUseCase validateTokenLoginUseCase;
+    private final UpdateUserUseCase updateUserUseCase;
 
     public UserController(CreateUserUseCase createUserUseCase,
                           LoginUserUseCase loginUserUseCase,
                           ValidateTokenUseCase validateTokenUseCase,
-                          ValidateTokenLoginUseCase validateTokenLoginUseCase) {
+                          ValidateTokenLoginUseCase validateTokenLoginUseCase,
+                          UpdateUserUseCase updateUserUseCase) {
         this.createUserUseCase = createUserUseCase;
         this.loginUserUseCase = loginUserUseCase;
         this.validateTokenUseCase = validateTokenUseCase;
         this.validateTokenLoginUseCase = validateTokenLoginUseCase;
+        this.updateUserUseCase = updateUserUseCase;
     }
 
     @PostMapping("/register")
@@ -105,6 +112,21 @@ public class UserController {
                 "message", "Token verificado com sucesso",
                 "user", UserMapper.toResponse(response.getUser()),
                 "token", response.getToken()
+        );
+
+        return ResponseEntity.ok(Map.of("data", data));
+    }
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity<Map<String, Object>> updateUser(
+            @PathVariable("id") java.util.UUID id,
+            @Valid @RequestBody UserUpdateRequest request) {
+
+        User updatedUser = updateUserUseCase.execute(id, UserMapper.toDomain(request));
+
+        Map<String, Object> data = Map.of(
+                "message", "Usuário atualizado com sucesso",
+                "user", UserMapper.toResponse(updatedUser)
         );
 
         return ResponseEntity.ok(Map.of("data", data));

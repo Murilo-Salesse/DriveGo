@@ -119,4 +119,12 @@ public class Payment {
                 ", createdAt=" + createdAt +
                 '}';
     }
+
+    public void markAsPaid() {
+        this.status = PaymentStatus.PAID;
+    }
+
+    public void markAsFailed() {
+        this.status = PaymentStatus.FAILED;
+    }
 }

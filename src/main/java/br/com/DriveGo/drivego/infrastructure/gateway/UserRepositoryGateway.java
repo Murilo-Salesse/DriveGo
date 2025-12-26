@@ -1,14 +1,15 @@
 package br.com.DriveGo.drivego.infrastructure.gateway;
 
+import java.util.UUID;
+
+import org.springframework.stereotype.Component;
+
 import br.com.DriveGo.drivego.core.entities.User;
-import br.com.DriveGo.drivego.core.gateways.UserGateway;
 import br.com.DriveGo.drivego.core.exceptions.NotFoundException;
+import br.com.DriveGo.drivego.core.gateways.UserGateway;
 import br.com.DriveGo.drivego.infrastructure.mappers.UserEntityMapper;
 import br.com.DriveGo.drivego.infrastructure.persistence.UserEntity;
 import br.com.DriveGo.drivego.infrastructure.persistence.UserRepository;
-import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 
 @Component
@@ -48,9 +49,11 @@ public class UserRepositoryGateway implements UserGateway {
         UserEntity existingEntity = userRepository.findById(user.getId())
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
 
-        existingEntity.setStatus(user.getStatus());
-        existingEntity.setVerificationCode(user.getVerificationCode());
-        existingEntity.setVerificationExpiresAt(user.getVerificationExpiresAt());
+        if (user.getFullName() != null) existingEntity.setFullName(user.getFullName());
+        if (user.getPhone() != null) existingEntity.setPhone(user.getPhone());
+        if (user.getStatus() != null) existingEntity.setStatus(user.getStatus());
+        if (user.getVerificationCode() != null) existingEntity.setVerificationCode(user.getVerificationCode());
+        if (user.getVerificationExpiresAt() != null) existingEntity.setVerificationExpiresAt(user.getVerificationExpiresAt());
 
         UserEntity savedEntity = userRepository.save(existingEntity);
 
