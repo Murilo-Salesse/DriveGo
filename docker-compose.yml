@@ -5,9 +5,9 @@ services:
     image: postgres:16
     container_name: drivego-db
     environment:
-      POSTGRES_DB: drivego
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${URL}
+      POSTGRES_USER: ${USER}
+      POSTGRES_PASSWORD: ${PASSWORD}
     ports:
       - "5439:5432"
     volumes:
